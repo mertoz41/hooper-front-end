@@ -11,3 +11,94 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.map {
+  position: relative;
+  top: 120px;
+  left: 460px
+}
+
+.location {
+  position: relative;
+  left: 80px;
+  top: 300px;
+}
+
+.marker{
+  size: unset;
+}
+
+.info {
+  position: absolute;
+  right: 50px;
+  top: 400px
+}
+
+
+.tab {
+  position: relative;
+}
+
+.search {
+  text-align: center;
+  top: 0px;
+}
+
+#header {
+  position: relative;
+  background-color: grey;
+  padding: 60px;
+}
+
+#feedback {
+  position: fixed;
+  right: 30px;
+  top: 170px;
+  padding: 0px;
+}
+#feedback-given {
+  position: fixed;
+  left: 330px;
+  top: 330px;
+
+}
+.scroller-taught {
+  width: 500px;
+  height: 280px;
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin;
+
+}
+
+.scroller-profile {
+  width: 500px;
+  height: 280px;
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin;
+}
+.scroller {
+  width: 350px;
+  height: 280px;
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin;
+}
+
+.img {
+position: absolute;
+left: 500px;
+top: 0px;
+}
+
+.username {
+  position: absolute;
+  right: 50px;
+  top: 60px
+}
+.spinning-ball {
+  position: sticky;
+  left: 200px;
+
+}

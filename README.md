@@ -4,6 +4,32 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+- hooper app.
+- platform where users can inform each other through basketball court locations marked on the google map.
+
+
+- main feature of the app is upon sharing location, users see basketball courts around them on the map and see postings made on specific locations.
+
+- to demonstrate, i am going to create a new user and then log in
+
+- on the homepage we have search bar to search for other users, 
+    - a button that will take us to logged in users profile,
+    - logout button
+    - share location button that will launch the map.
+
+- upon clicking share location 
+    - marker in the  middle is our location
+    - all other markers are court locations 
+
+- upon clicking on another marker, on the right side we see
+    - name of the court, 
+    - postings made on the court, 
+    - form to make a posting on this court.
+
+
+ 
+
+
 ### `yarn start`
 
 Runs the app in the development mode.<br />
