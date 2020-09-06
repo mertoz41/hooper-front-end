@@ -8,6 +8,7 @@ class Posting extends Component {
         location: {}
     }
     resetState = () =>{
+        
         this.setState({
             message: "",
             location: {}
@@ -15,6 +16,7 @@ class Posting extends Component {
     }
 
     fixState = (event) =>{
+
         this.setState({
             message: event.target.value,
             location: this.props.selectedLocation
@@ -23,28 +25,29 @@ class Posting extends Component {
     }
 
     preparePost = (event) =>{
+
         event.preventDefault()
         let post ={
             user_id: this.props.currentUser.id,
             message: this.state.message,
             location_id: this.state.location.id
         }
+
         this.props.userPosting(post)
         this.resetState()
+
     }
     
     render(){
         return(
             <div className="tab">
-            <Form onSubmit={event =>this.preparePost(event)}>
-            <Form.TextArea placeholder='Post on this location' name="message" value={this.state.message} onChange={event => this.fixState(event)} />
-            <Form.Button>Post</Form.Button>
-            </Form>
+                <Form onSubmit={event =>this.preparePost(event)}>
+                    <Form.TextArea placeholder='Post on this location' name="message" value={this.state.message} onChange={event => this.fixState(event)} />
+                    <Form.Button>Post</Form.Button>
+                </Form>
             </div>
-
         )
     }
-    
 }
 
 

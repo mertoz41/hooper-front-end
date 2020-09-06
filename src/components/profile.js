@@ -76,45 +76,41 @@ class Profile extends Component {
             <div>
                 <Navbar userProfile={this.props.userProfile} clearCurrentUser={this.props.clearCurrentUser}currentUser={this.props.currentUser} clearUser={this.props.clearUser} allUsers={this.props.allUsers} searchUser={this.props.searchUser} />
                 <div>
-                <Card>
-                    <Image src={this.props.searchedUser.picture} wrapped ui={false} />
-                    <Card.Content>
-                    <Card.Header>{this.props.searchedUser.username}</Card.Header>
-                   
-                    </Card.Content>
-                 </Card>
-                 </div>
-                 <div id="feedback-given">
-                 <Comment.Group>
-                 <Header as='h3' dividing>
+                    <Card>
+                        <Image src={this.props.searchedUser.picture} wrapped ui={false} />
+                        <Card.Content>
+                            <Card.Header>{this.props.searchedUser.username}</Card.Header>
+                        </Card.Content>
+                    </Card>
+                </div>
+                <div id="feedback-given">
+                <Comment.Group>
+                <Header as='h3' dividing>
                     Given feedbacks to
                 </Header>
-                    {this.props.searchedUser.taught.length < 1 ?
-                    <h3>{this.props.searchedUser.username} has not given any feedbacks.</h3>
-                    :
+                {this.props.searchedUser.taught.length < 1 ?
+                <h3>{this.props.searchedUser.username} has not given any feedbacks.</h3>
+                :
                 <div class="scroller-taught">
                     {this.props.searchedUser.taught.map(feedback => {
                     return(
                         <Comment>
                             <Comment.Content>
-                            <Comment.Author as='a'>{this.teacherName(feedback)}</Comment.Author>
-                            <Comment.Metadata>
-                            <div>{this.postDate(feedback)}</div>
-                            </Comment.Metadata>
-                            <Comment.Text>{feedback.message}</Comment.Text>
-
+                                <Comment.Author as='a'>{this.teacherName(feedback)}</Comment.Author>
+                                <Comment.Metadata>
+                                    <div>{this.postDate(feedback)}</div>
+                                </Comment.Metadata>
+                                <Comment.Text>{feedback.message}</Comment.Text>
                             </Comment.Content>
-
                         </Comment>
-
                     )
                 })}
                 </div>
             }
 
-                 </Comment.Group>
+                </Comment.Group>
 
-                 </div>
+                </div>
 
                 <div id="feedback">
                  <Comment.Group>
@@ -125,43 +121,32 @@ class Profile extends Component {
                     <div>Be the first to give a feedback to this hooper</div>
                     :
                     <div class="scroller-profile">
-                {this.props.feedbacks.map(feedback => {
-                return (
-            
-                <Comment>
-                <Comment.Avatar src={this.feedbackPic(feedback)} />
-                <Comment.Content>
-      
-          
-          
-                <Comment.Author as='a'>{this.supervisorName(feedback)}</Comment.Author>
-                <Comment.Metadata>
-                <div>{this.postDate(feedback)}</div>
-                </Comment.Metadata>
-                <Comment.Text>{feedback.message}</Comment.Text>
-     
-      
-     
+                        {this.props.feedbacks.map(feedback => {
+                        return (
+                            <Comment>
+                                <Comment.Avatar src={this.feedbackPic(feedback)} />
+                                    <Comment.Content>
+                                        <Comment.Author as='a'>{this.supervisorName(feedback)}</Comment.Author>
+                                        <Comment.Metadata>
+                                            <div>{this.postDate(feedback)}</div>
+                                        </Comment.Metadata>
+                                        <Comment.Text>{feedback.message}</Comment.Text>
+                                    </Comment.Content>
+                            </Comment>)})}
+                    </div>
+                    }
+                    {this.props.currentUser.id === this.props.searchedUser.id ? 
+                    null
+                    :
+                    <Form reply onSubmit={event => this.postFeedback(event)}>
+                    <Form.TextArea placeholder="Share your feedback" value={this.state.feedback} onChange={event => this.fixState(event)}/>
+                    <Button content='Add Feedback' labelPosition='left' icon='edit' primary />
+                    </Form>
+                    }
+                </Comment.Group>
+                </div>
 
-
-                </Comment.Content>
-                </Comment>
-    
-    )})}
-    </div>
-    }
-    {this.props.currentUser.id === this.props.searchedUser.id ? 
-      null
-    :
-    <Form reply onSubmit={event => this.postFeedback(event)}>
-      <Form.TextArea placeholder="Share your feedback" value={this.state.feedback} onChange={event => this.fixState(event)}/>
-      <Button content='Add Feedback' labelPosition='left' icon='edit' primary />
-    </Form>
-    }
-  </Comment.Group>
-  </div>
-
-            </div>
+                            </div>
         )
     }
 }

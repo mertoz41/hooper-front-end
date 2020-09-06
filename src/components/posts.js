@@ -52,19 +52,18 @@ class Posts extends Component{
 
                 {this.props.selectedLocationPostings.length > 0 ?
                 this.props.selectedLocationPostings.map(posting => 
-
-                <Comment.Group size='small'>
-                <Comment>
-                <Comment.Avatar as='a' src={this.userPicture(posting)} />
-                <Comment.Content>
-                <Comment.Author as='a' onClick={()=> this.redirect(posting)}>{this.username(posting)}</Comment.Author>
-                <Comment.Metadata>
-                    <span>{this.postDate(posting)}</span>
-                </Comment.Metadata>
-                <Comment.Text>{posting.message}</Comment.Text>
-                </Comment.Content>
-                </Comment>
-                </Comment.Group>)
+                    <Comment.Group size='small'>
+                        <Comment>
+                            <Comment.Avatar as='a' src={this.userPicture(posting)} />
+                            <Comment.Content>
+                                <Comment.Author as='a' onClick={()=> this.redirect(posting)}>{this.username(posting)}</Comment.Author>
+                                <Comment.Metadata>
+                                    <span>{this.postDate(posting)}</span>
+                                </Comment.Metadata>
+                                <Comment.Text>{posting.message}</Comment.Text>
+                            </Comment.Content>
+                        </Comment>
+                    </Comment.Group>)
                 :
                 <div><p>Be the first to post</p></div>
             }

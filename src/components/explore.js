@@ -21,40 +21,46 @@ class Explore extends Component {
             lat: null,
             lng: null
         }
-        }
+
+    }
+
     componentDidMount(){
+
         fetch('http://localhost:3000/locations')
         .then(resp => resp.json())
         .then(locations => {
              
             this.setState({
-                
                 apiLocations: locations
             })
         })
+
     }
     
     getLocation = () =>{
-        this.setState({ shared: !this.state.shared })
 
+        this.setState({ shared: !this.state.shared })
         navigator.geolocation.getCurrentPosition(this.showPosition)
 
-        
-        
     }
 
     showPosition = (position)=> {
+
         let currentLocation = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
         }
+
         this.setState({
             currentLocation: currentLocation
         })
+
         this.props.saveSharedLocation(currentLocation)
+
     }
 
     selectMarker =(marker)=>{
+
         let coordinates={
             lat: parseFloat(marker.latitude),
             lng: parseFloat(marker.longitude)
@@ -64,9 +70,11 @@ class Explore extends Component {
             selectedLocation: marker,
             currentLocation: coordinates
         })
+
     }
 
     userPosting = (post) =>{
+
         fetch('http://localhost:3000/postings', {
             method: "POST",
             headers: {
@@ -87,8 +95,6 @@ class Explore extends Component {
             this.setState({
                 apiLocations: filteredLocations
             })
-
-
         })
 
     }
