@@ -2,6 +2,8 @@ import React,{Component} from 'react'
 import { Search, Grid, Button, Icon  } from 'semantic-ui-react'
 import hoop from '../hoopster.png'
 import { withRouter } from "react-router";
+import {connect} from 'react-redux'
+import store from '../redux/store';
 
 
 
@@ -9,8 +11,7 @@ import { withRouter } from "react-router";
 class Navbar extends Component {
     state ={
         searching: "",
-        hoopers: [],
-        redirect: false
+        hoopers: []
     }
 
     fixState = (event) => {
@@ -26,30 +27,40 @@ class Navbar extends Component {
   }
 
   selectedHooper = (event) => {
-
     let found = this.props.allUsers.find(user => user.username === event.target.innerText)
-    localStorage.setItem('lastLocation', '/profile')
-    this.props.searchUser(found)
+    this.fetchSearchedUser(found.id)
+  }
+
+  fetchSearchedUser = (id) =>{
+
+    fetch(`http://localhost:3000/users/${id}`)
+        .then(resp => resp.json())
+        .then(user => { 
+          store.dispatch({type: "SEARCHED_USER", searchedUser: user})
+          store.dispatch({type: "SEARCHED_USER_FEEDBACKS", feedbacks: user.taught_by})
+          this.props.history.push(`/profile/${user.username}`)
+        })
+
 
   }
 
   redirect = () => {
 
-    this.props.clearUser(null)
-    localStorage.setItem('lastLocation', '/explore')
+    store.dispatch({type: "CLEAR_SEARCHED_USER"})
     this.props.history.push('/explore')
 
   }
 
   logout = () =>{
 
-    this.props.clearCurrentUser(null)
+    store.dispatch({type: "LOG_USER_OUT"})
+    localStorage.clear()
     this.props.history.push('/login')
 
   }
 
   userProfile = () => {    
-    this.props.userProfile()
+    this.fetchSearchedUser(this.props.currentUser.id)
   }
 
     
@@ -59,7 +70,6 @@ class Navbar extends Component {
     render(){
     
   
-      console.log(this.props.history.location)
 
         return(
             <div id="header">
@@ -90,4 +100,11 @@ class Navbar extends Component {
     }
 }
 
-export default withRouter(Navbar)
+const mapStateToProps = (state) =>{
+  return{
+    currentUser: state.currentUser,
+    allUsers: state.allUsers
+  }
+}
+
+export default connect(mapStateToProps)(withRouter(Navbar))

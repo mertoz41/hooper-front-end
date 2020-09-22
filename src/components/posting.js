@@ -1,5 +1,7 @@
 import React,{ Component } from 'react'
 import { Form } from 'semantic-ui-react'
+import {connect} from 'react-redux'
+import store from '../redux/store'
 
 
 class Posting extends Component {
@@ -32,8 +34,29 @@ class Posting extends Component {
             message: this.state.message,
             location_id: this.state.location.id
         }
+        
+        fetch('http://localhost:3000/postings', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                posting: post
+            })
+        })
+        .then(resp => resp.json())
+        .then(posting => {
+            let locations = this.props.apiLocations
+            let foundLocation = locations.find(location => location.id === posting.posting.location_id) 
+            foundLocation.postings.push(posting.posting)
+            let index = locations.indexOf(foundLocation)
+            let filteredLocations = locations.filter(location => location.id !== foundLocation.id)
+            filteredLocations.splice(index, 0, foundLocation)
+            let updatedLocations = [...filteredLocations]
+            store.dispatch({type: "ADD_COMMENT_ON_LOCATION", apiLocations: updatedLocations})
+          
+        })
 
-        this.props.userPosting(post)
         this.resetState()
 
     }
@@ -49,6 +72,11 @@ class Posting extends Component {
         )
     }
 }
+const mapStateToProps = (state) =>{
+    return{
+        apiLocations: state.apiLocations,
+        currentUser: state.currentUser
+    }
+}
 
-
-export default Posting
+export default connect(mapStateToProps)(Posting)

@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps'
+import {connect} from 'react-redux'
 
 
 
@@ -20,7 +21,7 @@ class Map extends Component {
             defaultZoom={13}
             >
                 < Marker position={this.props.currentLocation} icon={iconMarker}/>
-                {this.props.locations.map(marker => (
+                {this.props.apiLocations.map(marker => (
 
                     < Marker 
                     
@@ -42,5 +43,10 @@ class Map extends Component {
         )
     }
 }
-
-export default Map
+const mapStateToProps = (state) =>{
+    return{
+        currentLocation: state.currentLocation,
+        apiLocations: state.apiLocations
+    }
+}
+export default connect(mapStateToProps)(Map)

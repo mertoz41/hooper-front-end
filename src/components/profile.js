@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import { Card, Image, Button, Comment, Form, Header} from 'semantic-ui-react'
 import Navbar from './navbar'
+import {connect} from 'react-redux'
+import store from '../redux/store'
 
 
 class Profile extends Component {
@@ -35,7 +37,11 @@ class Profile extends Component {
         })
         .then(resp => resp.json())
         .then(data => {
-            this.props.addFeedback(data)
+            let feedbacks = this.props.feedbacks
+            let updatedFeed = [...feedbacks]
+
+            updatedFeed.push(data)
+            store.dispatch({type: "ADD_NEW_FEEDBACK", feedbacks: updatedFeed})
         })
         this.clearState()
     }
@@ -151,4 +157,13 @@ class Profile extends Component {
     }
 }
 
-export default Profile
+const mapStateToProps = (state) => {
+    return{
+        searchedUser: state.searchedUser,
+        currentUser: state.currentUser,
+        allUsers: state.allUsers,
+        feedbacks: state.feedbacks
+    }
+}
+
+export default connect(mapStateToProps)(Profile)

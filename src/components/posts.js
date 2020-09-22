@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import { Comment } from 'semantic-ui-react'
+import {connect} from 'react-redux'
 
 
 class Posts extends Component{
@@ -72,5 +73,10 @@ class Posts extends Component{
         )
     }
 }
+const mapStateToProps = (state) =>{
+    return{
+        allUsers: state.allUsers
+    }
+}
 
-export default Posts 
+export default connect(mapStateToProps)(Posts) 

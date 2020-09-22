@@ -6,6 +6,8 @@ import Posts from './posts'
 import Navbar from './navbar'
 import { Redirect } from 'react-router-dom';
 import Ball from '../newbball.gif'
+import store from '../redux/store'
+import {connect} from 'react-redux'
 
 
 
@@ -13,15 +15,8 @@ class Explore extends Component {
 
     
     state = {
-        
-        apiLocations: [],
         shared: false,
         selectedLocation: null,
-        currentLocation:{
-            lat: null,
-            lng: null
-        }
-
     }
 
     componentDidMount(){
@@ -29,10 +24,7 @@ class Explore extends Component {
         fetch('http://localhost:3000/locations')
         .then(resp => resp.json())
         .then(locations => {
-             
-            this.setState({
-                apiLocations: locations
-            })
+            store.dispatch({type: "API_LOCATIONS_INCOMING", apiLocations: locations})
         })
 
     }
@@ -50,13 +42,7 @@ class Explore extends Component {
             lat: position.coords.latitude,
             lng: position.coords.longitude
         }
-
-        this.setState({
-            currentLocation: currentLocation
-        })
-
-        this.props.saveSharedLocation(currentLocation)
-
+        store.dispatch({type: "SHARED_LOCATION", currentLocation: currentLocation})
     }
 
     selectMarker =(marker)=>{
@@ -73,31 +59,7 @@ class Explore extends Component {
 
     }
 
-    userPosting = (post) =>{
-
-        fetch('http://localhost:3000/postings', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                posting: post
-            })
-        })
-        .then(resp => resp.json())
-        .then(posting => {
-            let locations = this.state.apiLocations
-            let foundLocation = locations.find(location => location.id === posting.posting.location_id) 
-            foundLocation.postings.push(posting.posting)
-            let index = locations.indexOf(foundLocation)
-            let filteredLocations = locations.filter(location => location.id !== foundLocation.id)
-            filteredLocations.splice(index, 0, foundLocation)
-            this.setState({
-                apiLocations: filteredLocations
-            })
-        })
-
-    }
+ 
     
     render() {
         const panes = [
@@ -127,7 +89,7 @@ class Explore extends Component {
                     </div>
                     }
                 </div>
-                {this.props.sessionLocation && this.state.shared ? 
+                {this.props.currentLocation && this.state.shared ? 
                 <div className="map"><Map currentLocation={this.state.currentLocation} locations={this.state.apiLocations} selectMarker={this.selectMarker}/></div>
                 :
                 null
@@ -145,6 +107,10 @@ class Explore extends Component {
         )
     }
 }
+const mapStateToProps = (state) =>{
+    return {
+        currentLocation: state.currentLocation
+    }
+}
 
-
-export default Explore 
+export default connect(mapStateToProps)(Explore) 

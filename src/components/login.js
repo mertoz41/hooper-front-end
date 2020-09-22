@@ -2,6 +2,7 @@ import React,{Component} from "react"
 import { NavLink, Redirect } from "react-router-dom"
 import { withRouter } from "react-router";
 import { Button, Form, Grid, Header, Image, Message, Segment, Icon} from 'semantic-ui-react'
+import store from '../redux/store'
 
 class Login extends Component {
   state = {
@@ -52,7 +53,9 @@ class Login extends Component {
       if (resp.user_data){
 
         localStorage.setItem('jwt', resp.token)
-        this.props.userInfo(resp.user_data)
+        // place to dispatch "LOG_USER_IN"
+        store.dispatch({type: "LOG_USER_IN", currentUser: resp.user_data})
+        // this.props.userInfo(resp.user_data)
 
       } else {
 
