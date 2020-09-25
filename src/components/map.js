@@ -20,11 +20,9 @@ class Map extends Component {
             center={this.props.currentLocation}
             defaultZoom={13}
             >
-                < Marker position={this.props.currentLocation} icon={iconMarker}/>
+            <Marker position={this.props.currentLocation} icon={iconMarker}/>
                 {this.props.apiLocations.map(marker => (
-
-                    < Marker 
-                    
+            <Marker 
                     key={marker.id}
                     position={{lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude)}}
                     onClick={() => this.props.selectMarker(marker)}

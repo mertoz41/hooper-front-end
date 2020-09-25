@@ -15,6 +15,7 @@ class Navbar extends Component {
     }
 
     fixState = (event) => {
+        // controlled form to display users on searchbar
 
         let hooper = event.target.value
         let found = this.props.allUsers.filter(user => user.username.includes(hooper))
@@ -27,11 +28,13 @@ class Navbar extends Component {
   }
 
   selectedHooper = (event) => {
+    // function to find searched user
     let found = this.props.allUsers.find(user => user.username === event.target.innerText)
     this.fetchSearchedUser(found.id)
   }
 
   fetchSearchedUser = (id) =>{
+    // function to get searched user information
 
     fetch(`http://localhost:3000/users/${id}`)
         .then(resp => resp.json())
@@ -45,6 +48,7 @@ class Navbar extends Component {
   }
 
   redirect = () => {
+    // function to redirect to explore page
 
     store.dispatch({type: "CLEAR_SEARCHED_USER"})
     this.props.history.push('/explore')
@@ -52,6 +56,7 @@ class Navbar extends Component {
   }
 
   logout = () =>{
+    // function to logout 
 
     store.dispatch({type: "LOG_USER_OUT"})
     localStorage.clear()
@@ -59,7 +64,8 @@ class Navbar extends Component {
 
   }
 
-  userProfile = () => {    
+  userProfile = () => {   
+    // function to redirect to logged in users profile 
     this.fetchSearchedUser(this.props.currentUser.id)
   }
 

@@ -21,6 +21,7 @@ class Profile extends Component {
     }
 
     postFeedback = (event) =>{
+        // function to send post request for a feedback
         event.preventDefault()
         let feedback = {
             supervisor: this.props.currentUser,
@@ -47,16 +48,19 @@ class Profile extends Component {
     }
 
     supervisorName = (feedback) => {
+        // function to get user name
         let found = this.props.allUsers.find(user => user.id === feedback.supervisor_id)
         return found.username
     }
 
     teacherName = (feedback) =>{
+        // function to get user name
         let found = this.props.allUsers.find(user => user.id === feedback.supervisee_id)
         return found.username
     }
 
     feedbackPic = (feedback) =>{
+        // function to get user picture 
         let found = this.props.allUsers.find(user => user.id === feedback.supervisor_id)
         return found.picture
 
@@ -65,6 +69,7 @@ class Profile extends Component {
     }
 
     postDate =(feedback) =>{
+        // function to get feedback date 
          
         let date = new Date(feedback.created_at)
         let time = date.toLocaleTimeString()

@@ -20,6 +20,7 @@ class Login extends Component {
   }
 
   fixState = (event) => {
+    // controlled forms
 
     let name = event.target.name
     let value = event.target.value
@@ -27,16 +28,11 @@ class Login extends Component {
 
   }
 
-  sendUser = () =>{
-
-    let user = {
-      username: this.state.username,
-      password: this.state.password
-    }
-
-  }
+  
 
   login = (event) =>{
+
+    // post request for user information
      
     event.preventDefault()
     fetch('http://localhost:3000/login', {
@@ -53,9 +49,7 @@ class Login extends Component {
       if (resp.user_data){
 
         localStorage.setItem('jwt', resp.token)
-        // place to dispatch "LOG_USER_IN"
         store.dispatch({type: "LOG_USER_IN", currentUser: resp.user_data})
-        // this.props.userInfo(resp.user_data)
 
       } else {
 

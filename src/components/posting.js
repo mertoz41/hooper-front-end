@@ -9,6 +9,8 @@ class Posting extends Component {
         message: "",
         location: {}
     }
+
+  
     resetState = () =>{
         
         this.setState({
@@ -18,7 +20,7 @@ class Posting extends Component {
     }
 
     fixState = (event) =>{
-
+        // controlled form
         this.setState({
             message: event.target.value,
             location: this.props.selectedLocation
@@ -27,6 +29,7 @@ class Posting extends Component {
     }
 
     preparePost = (event) =>{
+        // function to send a post request for a comment on a location
 
         event.preventDefault()
         let post ={
@@ -75,7 +78,8 @@ class Posting extends Component {
 const mapStateToProps = (state) =>{
     return{
         apiLocations: state.apiLocations,
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        selectedLocation: state.selectedLocation
     }
 }
 

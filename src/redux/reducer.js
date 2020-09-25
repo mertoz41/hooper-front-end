@@ -7,7 +7,8 @@ const initialState = {
     currentLocation:{
         lat: null,
         lng: null
-    }
+    },
+    selectedLocation: null
 }
 
 
@@ -33,6 +34,8 @@ function reducer(state = initialState, action){
             return {...state, apiLocations: action.apiLocations};
         case "ADD_NEW_FEEDBACK":
             return {...state, feedbacks: action.feedbacks};
+        case "SELECTED_LOCATION_INCOMING":
+            return {...state, selectedLocation: action.selectedLocation};
         default:
             return state
     }

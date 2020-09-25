@@ -16,10 +16,10 @@ class Explore extends Component {
     
     state = {
         shared: false,
-        selectedLocation: null,
     }
 
     componentDidMount(){
+        // fetch for all locations to be marked on the map.
 
         fetch('http://localhost:3000/locations')
         .then(resp => resp.json())
@@ -31,12 +31,15 @@ class Explore extends Component {
     
     getLocation = () =>{
 
+        // function to get current users location.
+
         this.setState({ shared: !this.state.shared })
         navigator.geolocation.getCurrentPosition(this.showPosition)
 
     }
 
     showPosition = (position)=> {
+        // function to save current users location.
 
         let currentLocation = {
             lat: position.coords.latitude,
@@ -46,36 +49,27 @@ class Explore extends Component {
     }
 
     selectMarker =(marker)=>{
-
-        let coordinates={
-            lat: parseFloat(marker.latitude),
-            lng: parseFloat(marker.longitude)
-        }
-         
-        this.setState({
-            selectedLocation: marker,
-            currentLocation: coordinates
-        })
-
+        // function to display postings of the incoming marker.
+        
+        store.dispatch({type: "SELECTED_LOCATION_INCOMING", selectedLocation: marker})
+    
     }
 
  
     
     render() {
         const panes = [
-            { menuItem: 'Postings', render: () => <Tab.Pane><Posts allUsers={this.props.allUsers}  currentUser={this.props.currentUser} selectedLocationPostings={this.state.selectedLocation.postings} searchUser={this.props.searchUser}/> </Tab.Pane> },
-            { menuItem: 'Post', render: () => <Tab.Pane ><Posting selectedLocation={this.state.selectedLocation} userPosting={this.userPosting} currentUser={this.props.currentUser}/></Tab.Pane> }
+            { menuItem: 'Postings', render: () => <Tab.Pane><Posts/> </Tab.Pane> },
+            { menuItem: 'Post', render: () => <Tab.Pane ><Posting/></Tab.Pane> }
           ]
 
-        if (this.props.searchedUser){
-            return <Redirect to="/profile" />
-        }
+     
        
         
         return(
 
             <div>
-                <Navbar userProfile={this.props.userProfile} clearCurrentUser={this.props.clearCurrentUser} currentUser={this.props.currentUser} clearUser={this.props.clearUser} allUsers={this.props.allUsers} searchUser={this.props.searchUser} />
+                <Navbar/>
                 
                 <div className="location">
                     {this.state.shared ?
@@ -90,13 +84,15 @@ class Explore extends Component {
                     }
                 </div>
                 {this.props.currentLocation && this.state.shared ? 
-                <div className="map"><Map currentLocation={this.state.currentLocation} locations={this.state.apiLocations} selectMarker={this.selectMarker}/></div>
+                <div className="map">
+                <Map selectMarker={this.selectMarker}/>
+                </div>
                 :
                 null
                 }
-                {this.state.selectedLocation ? 
+                {this.props.selectedLocation ? 
                 <div className="info">
-                    <h3>{this.state.selectedLocation.name}</h3>
+                    <h3>{this.props.selectedLocation.name}</h3>
                     <Tab panes={panes} />
                 </div>
                 : 
@@ -109,7 +105,8 @@ class Explore extends Component {
 }
 const mapStateToProps = (state) =>{
     return {
-        currentLocation: state.currentLocation
+        currentLocation: state.currentLocation,
+        selectedLocation: state.selectedLocation
     }
 }
 
