@@ -11,7 +11,7 @@ import {connect} from 'react-redux'
 
 
 
-class Explore extends Component {
+export class Explore extends Component {
 
     
     state = {
@@ -70,10 +70,7 @@ class Explore extends Component {
 
             <div>
                 <Navbar/>
-                <div className="exper">
-                    experimenting
-                </div>
-                
+             
                 <div className="location">
                     {this.state.shared ?
                     <div class="spinning-ball">
