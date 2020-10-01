@@ -62,10 +62,12 @@ class Login extends Component {
 
     render(){
         return(
-            <div>
+            <div className="login-container">
               <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
                 <Grid.Column style={{ maxWidth: 450 }}>
+                  <div className="app-title">
                   <h1>Hooper App</h1>
+                  </div>
                   <Icon.Group size='big'>
                     <Icon size='big' name='basketball ball' color="orange"/>
                   </Icon.Group>

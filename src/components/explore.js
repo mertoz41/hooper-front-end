@@ -70,6 +70,9 @@ class Explore extends Component {
 
             <div>
                 <Navbar/>
+                <div className="exper">
+                    experimenting
+                </div>
                 
                 <div className="location">
                     {this.state.shared ?
@@ -78,7 +81,7 @@ class Explore extends Component {
                     </div>
                     :
                     <div className="words">
-                        <h3>Share your location to see events around you</h3>
+                        <h3 className="sentence">Share your location to see events around you</h3>
                         <button onClick={this.getLocation}>Share Location</button>
                     </div>
                     }
