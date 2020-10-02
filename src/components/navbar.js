@@ -8,7 +8,7 @@ import store from '../redux/store';
 
 
 
-class Navbar extends Component {
+export class Navbar extends Component {
     state ={
         searching: "",
         hoopers: []
@@ -88,11 +88,14 @@ class Navbar extends Component {
                 <div class="img" onClick={this.redirect}>
                   <img src={hoop} width="400"/>
                 </div>
-                <div class="username">
-                  <Button icon labelPosition='left' onClick={this.userProfile}>
+                <div className="username">
+                  <div >
+                  <Button className="username-button" icon labelPosition='left' onClick={this.userProfile}>
                     <Icon name='user' />
-                      {this.props.currentUser.username}
+
+                    {this.props.currentUser.username}
                   </Button>
+                  </div>
                   <Button icon labelPosition='right' onClick={this.logout}>
                     Logout 
                     <Icon name='sign out alternate' />
