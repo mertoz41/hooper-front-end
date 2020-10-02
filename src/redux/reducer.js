@@ -8,7 +8,8 @@ const initialState = {
         lat: null,
         lng: null
     },
-    selectedLocation: null
+    selectedLocation: null,
+    shared: false
 }
 
 
@@ -36,6 +37,8 @@ function reducer(state = initialState, action){
             return {...state, feedbacks: action.feedbacks};
         case "SELECTED_LOCATION_INCOMING":
             return {...state, selectedLocation: action.selectedLocation};
+        case "LOCATION_SHARED":
+            return {...state, shared: true};
         default:
             return state
     }

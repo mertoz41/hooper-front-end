@@ -8,7 +8,7 @@ import Givenfeedbacks from './givenfeedback'
 import Receivedfeedbacks from './receivedfeedback'
 
 
-class Profile extends Component {
+export class Profile extends Component {
 
     render(){
         return(

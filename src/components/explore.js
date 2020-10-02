@@ -5,18 +5,16 @@ import Posting from './posting'
 import Posts from './posts'
 import Navbar from './navbar'
 import { Redirect } from 'react-router-dom';
-import Ball from '../newbball.gif'
 import store from '../redux/store'
 import {connect} from 'react-redux'
+import Location from './location'
 
 
 
 export class Explore extends Component {
 
     
-    state = {
-        shared: false,
-    }
+   
 
     componentDidMount(){
         // fetch for all locations to be marked on the map.
@@ -29,24 +27,6 @@ export class Explore extends Component {
 
     }
     
-    getLocation = () =>{
-
-        // function to get current users location.
-
-        this.setState({ shared: !this.state.shared })
-        navigator.geolocation.getCurrentPosition(this.showPosition)
-
-    }
-
-    showPosition = (position)=> {
-        // function to save current users location.
-
-        let currentLocation = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-        }
-        store.dispatch({type: "SHARED_LOCATION", currentLocation: currentLocation})
-    }
 
     selectMarker =(marker)=>{
         // function to display postings of the incoming marker.
@@ -70,20 +50,9 @@ export class Explore extends Component {
 
             <div>
                 <Navbar/>
+                <Location /> 
              
-                <div className="location">
-                    {this.state.shared ?
-                    <div class="spinning-ball">
-                        <img src={Ball} width="100"/>
-                    </div>
-                    :
-                    <div className="words">
-                        <h3 className="sentence">Share your location to see events around you</h3>
-                        <button onClick={this.getLocation}>Share Location</button>
-                    </div>
-                    }
-                </div>
-                {this.props.currentLocation && this.state.shared ? 
+                {this.props.currentLocation && this.props.shared ? 
                 <div className="map">
                 <Map selectMarker={this.selectMarker}/>
                 </div>
@@ -106,7 +75,8 @@ export class Explore extends Component {
 const mapStateToProps = (state) =>{
     return {
         currentLocation: state.currentLocation,
-        selectedLocation: state.selectedLocation
+        selectedLocation: state.selectedLocation,
+        shared: state.shared
     }
 }
 
