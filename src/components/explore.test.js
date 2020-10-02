@@ -8,16 +8,17 @@ import Map from './map'
 
 
 describe('explore component', () =>{
+    let wrapper
+    beforeEach(() => {
+        wrapper = shallow(<Explore />)
+    })
     it('should render NavBar component', () =>{
-        const wrapper = shallow(<Explore />)
         expect(wrapper.contains(<Navbar/>)).toBe(true)
     })
     it('should render a button to share location', () =>{
-        const wrapper = shallow(<Explore />)
         expect(wrapper.find('button').text()).toMatch("Share Location")
     })
     it('should render Map component upon sharing location', () =>{
-        const wrapper = shallow(<Explore />)
         const button = wrapper.find('button')
         button.simulate('click')
         expect(wrapper.find('div.map')).toBeDefined();

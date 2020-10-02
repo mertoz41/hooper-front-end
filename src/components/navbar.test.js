@@ -1,16 +1,27 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import {Navbar} from './navbar'
 
 describe('Navbar component', () =>{
-    it('should render user name on the button', () =>{
-        const currentUser = {
+    let wrapper
+    let currentUser
+    beforeEach(() => {
+        currentUser = {
             username: "Mert"
         }
-        const wrapper = shallow(<Navbar currentUser={currentUser} />)
-        const button = wrapper.find('Button.username-button');
-        console.log(button.debug())
-        expect(wrapper.find('Button.username-button').text()).toEqual(`${currentUser.username}`)
-            
+        wrapper = mount(<Navbar currentUser={currentUser}/>)
+    })
+
+    it('should render the component', () =>{
+        expect(wrapper.find('div.header')).toBeDefined()
+    })
+    it('should render username on the button', () =>{
+        expect(wrapper.find('div.username').text()).toEqual(`${currentUser.username}`)   
+    })
+    it('should render logout button', () =>{
+        expect(wrapper.find('div.logout')).toHaveLength(1)
+    })
+    it('should render the hoop image', () => {
+        expect(wrapper.find('img')).toBeDefined()
     })
 })

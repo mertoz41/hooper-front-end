@@ -88,18 +88,21 @@ export class Navbar extends Component {
                 <div class="img" onClick={this.redirect}>
                   <img src={hoop} width="400"/>
                 </div>
-                <div className="username">
-                  <div >
+                <div >
+                  <div className="username" >
                   <Button className="username-button" icon labelPosition='left' onClick={this.userProfile}>
                     <Icon name='user' />
 
                     {this.props.currentUser.username}
                   </Button>
                   </div>
+                  <div className="logout">
+
                   <Button icon labelPosition='right' onClick={this.logout}>
                     Logout 
                     <Icon name='sign out alternate' />
                   </Button>
+                  </div>
                 </div> 
               </Grid>
                     
