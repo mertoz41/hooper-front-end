@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import './App.css';
-import Explore from './components/explore'
+import Explore from './pages/Explore'
 import Login from './components/login'
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Profile from './components/profile'
