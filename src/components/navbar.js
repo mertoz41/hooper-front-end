@@ -94,7 +94,7 @@ export class Navbar extends Component {
           </Grid>
         </Box>
         <Box flex={2}>
-          <Image src={hoop} m="0 auto" height={300} />
+          <Image src={hoop} m="0 auto" height={230} />
         </Box>
         <Box
           flex={1}

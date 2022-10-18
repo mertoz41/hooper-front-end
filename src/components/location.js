@@ -28,7 +28,7 @@ export class ShareLocation extends Component {
     return (
       <Box display={"flex"} justifyContent="center">
         {this.props.shared ? (
-          <Box backgroundColor={"red"} alignSelf={"center"}>
+          <Box alignSelf={"center"}>
             <Image src={Ball} height={150} />
           </Box>
         ) : (
@@ -39,6 +39,7 @@ export class ShareLocation extends Component {
             <Button marginTop={10} onClick={this.getLocation}>
               share location
             </Button>
+            <Button>Add a new court</Button>
           </Box>
         )}
       </Box>
