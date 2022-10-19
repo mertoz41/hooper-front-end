@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 //
 // export class Map extends Component {
 const Map = ({ locations, selectMarker }) => {
-  // render() {
   // AIzaSyA_-d_4j-YXUL1wE9WIbJdp4tBNtWCvkK0
   let iconMarker = new window.google.maps.MarkerImage(
     "https://lh3.googleusercontent.com/bECXZ2YW3j0yIEBVo92ECVqlnlbX9ldYNGrCe0Kr4VGPq-vJ9Xncwvl16uvosukVXPfV=w300",
@@ -40,7 +39,7 @@ const Map = ({ locations, selectMarker }) => {
       <GoogleMapExample
         googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_-d_4j-YXUL1wE9WIbJdp4tBNtWCvkK0&v=3.exp&libraries=geometry,drawing,places"
         loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `400px`, width: `400px` }} />}
+        containerElement={<div style={{ height: `470px`, width: `470px` }} />}
         mapElement={<div style={{ height: `100%` }} />}
       />
     </div>

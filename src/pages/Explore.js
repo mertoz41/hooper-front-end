@@ -60,10 +60,11 @@ const Explore = () => {
         marginRight={5}
         rowSpan={4}
         colSpan={2}
+        flex={1}
         bg="#E6F6FF"
         borderRadius={10}
       >
-        {selectedLocation ? <CourtForum location={selectedLocation} /> : null}
+        {selectedLocation ? <CourtForum setSelectedLocation={setSelectedLocation} location={selectedLocation} /> : null}
       </GridItem>
     </Grid>
   );
