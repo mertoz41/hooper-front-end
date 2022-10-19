@@ -76,7 +76,7 @@ export class Navbar extends Component {
     return (
       <Box
         backgroundColor={"darkgray"}
-        height={200}
+        height={100}
         display="flex"
         paddingX={5}
       >
@@ -94,7 +94,7 @@ export class Navbar extends Component {
           </Grid>
         </Box>
         <Box flex={2}>
-          <Image src={hoop} m="0 auto" height={230} />
+          <Image src={hoop} m="0 auto" height={140} />
         </Box>
         <Box
           flex={1}

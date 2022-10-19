@@ -16,7 +16,7 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchUsers();
+    // this.fetchUsers();
     this.checkJwt();
   }
 

@@ -95,49 +95,54 @@ const CourtForum = ({ location, setSelectedLocation }) => {
       display={"flex"}
       justifyContent="space-between"
       flexDir={"column"}
-      paddingBottom={10}
-      marginLeft={5}
-      overflow={"auto"}
+      borderWidth={2}
+      borderRadius={10}
+      borderColor="green"
+      padding={5}
     >
-      <Box>
+      <Box overflow={"auto"}>
         <Heading
           display={"flex"}
           flexDir="row"
-          textAlign={"center"}
+          textAlign={"right"}
           justifyContent="space-between"
+          borderBottomWidth={1}
+          borderBottomColor={"darkgray"}
         >
-          <Box flex={1} alignSelf="center">
+          <Box alignSelf="center">
             <CloseButton
               size="lg"
               backgroundColor={"darkgray"}
               onClick={() => setSelectedLocation(null)}
             />
           </Box>
-          <Box flex={2}>
-            <Text>{location.name}</Text>
+          <Box>
+            <Text fontSize={16}>{location.name}</Text>
+            <Text fontSize={12}>{location.address}</Text>
           </Box>
-          <Box flex={1}></Box>
+          {/* <Box flex={1}></Box> */}
         </Heading>
         <Box overflow={"auto"}>
-          {postings.length &&
-            postings.map((post) => (
-              <Box
-                key={post.id}
-                borderBottomWidth={1}
-                borderBottomColor={"darkgray"}
-                marginBottom={2}
-              >
-                <Flex justifyContent={"space-between"}>
-                  <Text fontSize={16} fontWeight={"bold"}>
-                    {post.username}
-                  </Text>
-                  <Text alignSelf={"flex-end"} fontSize={11}>
-                    {getTiming(post.created_at)}
-                  </Text>
-                </Flex>
-                <Text>{post.message}</Text>
-              </Box>
-            ))}
+          {postings.length
+            ? postings.map((post) => (
+                <Box
+                  key={post.id}
+                  borderBottomWidth={1}
+                  borderBottomColor={"darkgray"}
+                  marginBottom={2}
+                >
+                  <Flex justifyContent={"space-between"}>
+                    <Text fontSize={16} fontWeight={"bold"}>
+                      {post.username}
+                    </Text>
+                    <Text alignSelf={"flex-end"} fontSize={11}>
+                      {getTiming(post.created_at)}
+                    </Text>
+                  </Flex>
+                  <Text>{post.message}</Text>
+                </Box>
+              ))
+            : null}
         </Box>
       </Box>
       <form onSubmit={(e) => postPosting(e)}>
