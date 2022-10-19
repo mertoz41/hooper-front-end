@@ -15,7 +15,6 @@ const Explore = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   useEffect(() => {
-    console.log("AYEE");
     let token = localStorage.getItem("jwt");
     fetch("http://localhost:3000/locations", {
       method: "GET",
@@ -24,8 +23,8 @@ const Explore = () => {
       },
     })
       .then((resp) => resp.json())
-      .then((locations) => {
-        setLocations(locations);
+      .then((resp) => {
+        setLocations(resp.locations);
       });
   }, []);
 
