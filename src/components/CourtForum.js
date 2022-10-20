@@ -15,7 +15,7 @@ const CourtForum = ({ location, setSelectedLocation }) => {
   const [postings, setPostings] = useState([]);
   useEffect(() => {
     getPostings(location.id);
-  }, []);
+  }, [location]);
   const getPostings = (id) => {
     fetch(`http://localhost:3000/postings/${id}`, {
       method: "GET",
@@ -91,13 +91,18 @@ const CourtForum = ({ location, setSelectedLocation }) => {
   return (
     <Box
       flex={1}
-      height={"100%"}
+      position="absolute"
+      zIndex={1}
+      width={370}
+      height={"70%"}
+      bottom={10}
+      left={5}
       display={"flex"}
+      backdropFilter="auto"
+      backdropBlur="10px"
       justifyContent="space-between"
       flexDir={"column"}
-      borderWidth={2}
       borderRadius={10}
-      borderColor="green"
       padding={5}
     >
       <Box overflow={"auto"}>
@@ -109,10 +114,10 @@ const CourtForum = ({ location, setSelectedLocation }) => {
           borderBottomWidth={1}
           borderBottomColor={"darkgray"}
         >
-          <Box alignSelf="center">
+          <Box>
             <CloseButton
-              size="lg"
-              backgroundColor={"darkgray"}
+              size="sm"
+              backgroundColor={"white"}
               onClick={() => setSelectedLocation(null)}
             />
           </Box>
@@ -120,7 +125,6 @@ const CourtForum = ({ location, setSelectedLocation }) => {
             <Text fontSize={16}>{location.name}</Text>
             <Text fontSize={12}>{location.address}</Text>
           </Box>
-          {/* <Box flex={1}></Box> */}
         </Heading>
         <Box overflow={"auto"}>
           {postings.length

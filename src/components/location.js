@@ -67,6 +67,8 @@ const LocationOptions = ({ navigateToLocation, setLocations }) => {
       borderRadius={10}
       borderColor="green"
       padding={5}
+      position="absolute"
+      zIndex={1}
       paddingTop={0}
       height="100%"
       display="flex"

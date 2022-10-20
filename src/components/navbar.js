@@ -75,10 +75,17 @@ export class Navbar extends Component {
   render() {
     return (
       <Box
-        backgroundColor={"darkgray"}
+        borderRadius={10}
+        backdropFilter="auto"
+        backdropBlur="10px"
         height={100}
+        w="50%"
         display="flex"
-        paddingX={5}
+        position={"absolute"}
+        zIndex={1}
+        left={0}
+        right={0}
+        m="0 auto"
       >
         <Box flex={1} display="flex" alignSelf="center">
           <Grid>
