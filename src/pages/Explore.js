@@ -4,6 +4,7 @@ import CourtForum from "../components/CourtForum";
 import { Box } from "@chakra-ui/react";
 import Map from "../components/Map";
 import NewCourt from "../components/NewCourt";
+import ProfileSection from "../components/ProfileSection";
 const ReusableBox = ({ children }) => {
   return (
     <Box
@@ -28,6 +29,7 @@ const Explore = () => {
   const [locations, setLocations] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [selectedNewCourt, setSelectedNewCourt] = useState(null);
+  const [searchedUser, setSearchedUser] = useState(null);
   const [newCourt, setDisplayNewCourt] = useState(false);
   useEffect(() => {
     let token = localStorage.getItem("jwt");
@@ -50,7 +52,12 @@ const Explore = () => {
 
   return (
     <Box h="100vh">
-      <Navbar setDisplayNewCourt={setDisplayNewCourt} />
+      <Navbar
+        setSearchedUser={setSearchedUser}
+        setDisplayNewCourt={setDisplayNewCourt}
+      />
+      <ProfileSection />
+      {searchedUser ? null : null}
       {newCourt ? (
         <ReusableBox>
           <NewCourt

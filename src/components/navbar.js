@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import store from "../redux/store";
 import { Box, Image, Input, Text, Button, Icon } from "@chakra-ui/react";
 
-const NavBar = ({ currentUser, allUsers, setDisplayNewCourt }) => {
+const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
   const [searching, setSearching] = useState("");
   const [hoopers, setHoopers] = useState([]);
 
@@ -27,29 +27,19 @@ const NavBar = ({ currentUser, allUsers, setDisplayNewCourt }) => {
     }
   };
 
-  const selectedHooper = (event) => {
-    let found = allUsers.find(
-      (user) => user.username === event.target.innerText
-    );
-    fetchSearchedUser(found.id);
-  };
-
   const fetchSearchedUser = (id) => {
-    fetch(`http://localhost:3000/users/${id}`)
+    fetch(`http://localhost:3000/users/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    })
       .then((resp) => resp.json())
       .then((user) => {
-        store.dispatch({ type: "SEARCHED_USER", searchedUser: user });
-        store.dispatch({
-          type: "SEARCHED_USER_FEEDBACKS",
-          feedbacks: user.taught_by,
-        });
-        this.props.history.push(`/profile/${user.username}`);
+        setSearchedUser(user);
+        setSearching("");
+        setHoopers([]);
       });
-  };
-
-  const redirect = () => {
-    store.dispatch({ type: "CLEAR_SEARCHED_USER" });
-    this.props.history.push("/explore");
   };
 
   const logout = () => {
@@ -79,8 +69,9 @@ const NavBar = ({ currentUser, allUsers, setDisplayNewCourt }) => {
       right={0}
       m="0 auto"
     >
-      <Box flex={1} h="100%" display="flex" alignItems="center">
+      <Box flex={1} h="100%" display="flex" alignItems="center" w="100%">
         <Input
+          w="100%"
           placeholder="search hoopers..."
           borderColor={"lightgray"}
           value={searching}
@@ -97,29 +88,23 @@ const NavBar = ({ currentUser, allUsers, setDisplayNewCourt }) => {
             position="absolute"
             borderRadius={10}
             borderWidth={2}
-            backgroundColor="red"
-            // backgroundColor="rgba(255,255,255,.2)"
-            backdropFilter="auto"
+            // backgroundColor="red"
+            backgroundColor="rgba(255,255,255,1)"
+            backdropFilter="revert"
             backdropBlur="10px"
           >
             {hoopers.map((hooper) => (
-              <Box key={hooper.id} borderBottomWidth={1}>
+              <Box
+                key={hooper.id}
+                borderBottomWidth={1}
+                cursor="pointer"
+                onClick={() => fetchSearchedUser(hooper.id)}
+              >
                 <Text>{hooper.username}</Text>
               </Box>
             ))}
           </Box>
         ) : null}
-        {/* <Grid>
-          <Grid.Column width={3}>
-            <Search
-              placeholder="Search hoopers"
-              results={hoopers}
-              value={searching}
-              onResultSelect={(event) => selectedHooper(event)}
-              onSearchChange={(event) => searchUsers(event)}
-            />
-          </Grid.Column>
-        </Grid> */}
       </Box>
       <Box flex={2}>
         <Image src={hoop} m="0 auto" width={130} />
@@ -149,11 +134,4 @@ const NavBar = ({ currentUser, allUsers, setDisplayNewCourt }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    currentUser: state.currentUser,
-    allUsers: state.allUsers,
-  };
-};
-
-export default connect(mapStateToProps)(withRouter(NavBar));
+export default NavBar;
