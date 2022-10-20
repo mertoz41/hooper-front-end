@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { Card, Image, Button, Comment, Form, Header} from 'semantic-ui-react'
-import Navbar from './navbar'
+import Navbar from './NavBar'
 import {connect} from 'react-redux'
 import store from '../redux/store'
 import Profilecard from './profilecard'

@@ -1,24 +1,30 @@
 import React, { useState } from "react";
-import { Search, Grid, Button, Icon } from "semantic-ui-react";
 import hoop from "../hoopster.png";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import store from "../redux/store";
-import { Box, Image } from "@chakra-ui/react";
+import { Box, Image, Input, Text, Button, Icon } from "@chakra-ui/react";
 
 const NavBar = ({ currentUser, allUsers, setDisplayNewCourt }) => {
   const [searching, setSearching] = useState("");
   const [hoopers, setHoopers] = useState([]);
 
-  const fixState = (event) => {
+  const searchUsers = (event) => {
     let hooper = event.target.value;
-    let found = allUsers.filter((user) => user.username.includes(hooper));
-    found = found.map((hooper) => ({
-      title: hooper.username,
-      image: hooper.picture,
-    }));
     setSearching(hooper);
-    setHoopers(found);
+    if (event.target.value.length > 2) {
+      fetch(`http://localhost:3000/users/search/${hooper}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
+      })
+        .then((resp) => resp.json())
+        .then((resp) => {
+          console.log(resp);
+          setHoopers(resp);
+        });
+    }
   };
 
   const selectedHooper = (event) => {
@@ -58,10 +64,12 @@ const NavBar = ({ currentUser, allUsers, setDisplayNewCourt }) => {
 
   return (
     <Box
-      borderRadius={10}
-      backgroundColor="rgba(0,0,0,.2)"
+      borderRadius={20}
+      borderWidth={2}
+      backgroundColor="rgba(255,255,255,.2)"
       backdropFilter="auto"
       backdropBlur="10px"
+      paddingX={10}
       height={100}
       w="50%"
       display="flex"
@@ -71,43 +79,70 @@ const NavBar = ({ currentUser, allUsers, setDisplayNewCourt }) => {
       right={0}
       m="0 auto"
     >
-      <Box flex={1} display="flex" alignSelf="center">
-        <Grid>
+      <Box flex={1} h="100%" display="flex" alignItems="center">
+        <Input
+          placeholder="search hoopers..."
+          borderColor={"lightgray"}
+          value={searching}
+          onChange={(e) => searchUsers(e)}
+        />
+
+        {hoopers.length ? (
+          <Box
+            top={20}
+            left={10}
+            width={160}
+            h={300}
+            padding={5}
+            position="absolute"
+            borderRadius={10}
+            borderWidth={2}
+            backgroundColor="red"
+            // backgroundColor="rgba(255,255,255,.2)"
+            backdropFilter="auto"
+            backdropBlur="10px"
+          >
+            {hoopers.map((hooper) => (
+              <Box key={hooper.id} borderBottomWidth={1}>
+                <Text>{hooper.username}</Text>
+              </Box>
+            ))}
+          </Box>
+        ) : null}
+        {/* <Grid>
           <Grid.Column width={3}>
             <Search
               placeholder="Search hoopers"
               results={hoopers}
               value={searching}
               onResultSelect={(event) => selectedHooper(event)}
-              onSearchChange={(event) => fixState(event)}
+              onSearchChange={(event) => searchUsers(event)}
             />
           </Grid.Column>
-        </Grid>
+        </Grid> */}
       </Box>
       <Box flex={2}>
-        <Image src={hoop} m="0 auto" height={140} />
+        <Image src={hoop} m="0 auto" width={130} />
       </Box>
-      <Box flex={1} justifyContent="flex-end" display="flex" alignSelf="center">
-        <Button
-          className="username-button"
-          icon
-          labelPosition="right"
-          onClick={userProfile}
-        >
-          <Icon name="user" />
-          {currentUser.username}
-        </Button>
-        <Button icon labelPosition="right" onClick={logout}>
-          Logout <Icon name="sign out alternate" />
+      <Box
+        flex={1}
+        justifyContent="flex-end"
+        display="flex"
+        h="100%"
+        alignItems="center"
+      >
+        <Button size={"sm"} className="username-button" onClick={userProfile}>
+          profile
         </Button>
         <Button
+          size={"sm"}
           className="username-button"
-          icon
-          labelPosition="right"
           onClick={() => setDisplayNewCourt(true)}
         >
-          <Icon name="user" />
-          add new court
+          add
+        </Button>
+        <Button size={"sm"} icon onClick={logout}>
+          logout
         </Button>
       </Box>
     </Box>

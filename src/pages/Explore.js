@@ -4,6 +4,26 @@ import CourtForum from "../components/CourtForum";
 import { Box } from "@chakra-ui/react";
 import Map from "../components/Map";
 import NewCourt from "../components/NewCourt";
+const ReusableBox = ({ children }) => {
+  return (
+    <Box
+      position="absolute"
+      zIndex={1}
+      width={370}
+      height={"70%"}
+      bottom={10}
+      borderWidth={2}
+      left={5}
+      backgroundColor="rgba(255,255,255,.2)"
+      backdropFilter="auto"
+      backdropBlur="10px"
+      borderRadius={10}
+      padding={5}
+    >
+      {children}
+    </Box>
+  );
+};
 const Explore = () => {
   const [locations, setLocations] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
@@ -27,50 +47,27 @@ const Explore = () => {
     setSelectedNewCourt(null);
     setDisplayNewCourt(false);
   };
+
   return (
     <Box h="100vh">
       <Navbar setDisplayNewCourt={setDisplayNewCourt} />
       {newCourt ? (
-        <Box
-          position="absolute"
-          zIndex={1}
-          width={370}
-          height={"70%"}
-          bottom={10}
-          left={5}
-          backgroundColor="rgba(0,0,0,.2)"
-          backdropFilter="auto"
-          backdropBlur="10px"
-          borderRadius={10}
-          padding={5}
-        >
+        <ReusableBox>
           <NewCourt
             selectedNewCourt={selectedNewCourt}
             setSelectedNewCourt={setSelectedNewCourt}
             setDisplayNewCourt={closeNewCourt}
             setLocations={setLocations}
           />
-        </Box>
+        </ReusableBox>
       ) : null}
       {selectedMarker ? (
-        <Box
-          position="absolute"
-          zIndex={1}
-          width={370}
-          height={"70%"}
-          bottom={10}
-          left={5}
-          backgroundColor="rgba(0,0,0,.2)"
-          backdropFilter="auto"
-          backdropBlur="10px"
-          borderRadius={10}
-          padding={5}
-        >
+        <ReusableBox>
           <CourtForum
             setSelectedMarker={setSelectedMarker}
             location={selectedMarker}
           />
-        </Box>
+        </ReusableBox>
       ) : null}
       <Map
         selectedNewCourt={selectedNewCourt}
