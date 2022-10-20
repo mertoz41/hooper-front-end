@@ -14,7 +14,14 @@ const GoogleMapExample = withScriptjs(
       defaultCenter={{ lat: 38.907852, lng: -77.072807 }}
       defaultZoom={13}
     >
-      {/* <Marker position={this.props.currentLocation} icon={iconMarker} /> */}
+      {props.selectedNewCourt && (
+        <Marker
+          position={{
+            lat: props.selectedNewCourt.lat,
+            lng: props.selectedNewCourt.lng,
+          }}
+        />
+      )}
       {props.locations.map((marker) => (
         <Marker
           key={marker.id}
@@ -31,6 +38,17 @@ const GoogleMapExample = withScriptjs(
 class Map extends React.Component {
   constructor(props) {
     super(props);
+  }
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.selectedNewCourt &&
+      this.props.selectedNewCourt !== prevProps
+    ) {
+      this.map.panTo({
+        lat: parseFloat(this.props.selectedNewCourt.lat),
+        lng: parseFloat(this.props.selectedNewCourt.lng),
+      });
+    }
   }
 
   chooseMarker = (marker) => {
@@ -54,6 +72,7 @@ class Map extends React.Component {
           locations={this.props.locations}
           selectMarker={this.chooseMarker}
           onMapMounted={this.handleMapMounted}
+          selectedNewCourt={this.props.selectedNewCourt}
         />
       </Box>
     );

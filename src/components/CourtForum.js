@@ -10,7 +10,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-const CourtForum = ({ location, setSelectedLocation }) => {
+const CourtForum = ({ location, setSelectedMarker }) => {
   const [message, setMessage] = useState("");
   const [postings, setPostings] = useState([]);
   useEffect(() => {
@@ -90,20 +90,11 @@ const CourtForum = ({ location, setSelectedLocation }) => {
   };
   return (
     <Box
-      flex={1}
-      position="absolute"
-      zIndex={1}
-      width={370}
-      height={"70%"}
-      bottom={10}
-      left={5}
       display={"flex"}
-      backdropFilter="auto"
-      backdropBlur="10px"
+      flex={1}
       justifyContent="space-between"
       flexDir={"column"}
-      borderRadius={10}
-      padding={5}
+      height={"100%"}
     >
       <Box overflow={"auto"}>
         <Heading
@@ -112,13 +103,13 @@ const CourtForum = ({ location, setSelectedLocation }) => {
           textAlign={"right"}
           justifyContent="space-between"
           borderBottomWidth={1}
-          borderBottomColor={"darkgray"}
+          borderBottomColor={"lightgray"}
         >
           <Box>
             <CloseButton
               size="sm"
               backgroundColor={"white"}
-              onClick={() => setSelectedLocation(null)}
+              onClick={() => setSelectedMarker(null)}
             />
           </Box>
           <Box>
