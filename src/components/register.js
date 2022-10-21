@@ -1,31 +1,17 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Image,
-  Message,
-  Segment,
-  Icon,
-} from "semantic-ui-react";
 import { withRouter } from "react-router";
-import { Box, Text, Input } from "@chakra-ui/react";
-// class Register extends Component {
+import { Box, Text, Input, Image, Button } from "@chakra-ui/react";
+import Compressor from "compressorjs";
+
 const Signup = () => {
   const [username, setUsername] = useState("");
+  const [avatar, setAvatar] = useState(null);
+  const [avatarBlob, setAvatarBlob] = useState(null);
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [height, setHeight] = useState("");
   const [position, setPosition] = useState("");
   const [playLike, setPlayLike] = useState("");
-
-  // state = {
-  //   username: "",
-  //   password: "",
-  //   picture: "",
-  //   success: false,
-  // };
 
   const fixState = (event) => {
     let name = event.target.name;
@@ -94,6 +80,28 @@ const Signup = () => {
     );
   };
 
+  const compressPic = (e) => {
+    const pic = e.target.files[0];
+    new Compressor(pic, {
+      quality: 0.8, // 0.6 can also be used, but its not recommended to go below.
+      success: (compressedResult) => {
+        // console.log(compressedResult, "SECOND");
+        let img = URL.createObjectURL(compressedResult);
+        let splitted = img.split(":");
+        splitted.shift();
+
+        setAvatar(img);
+        // let imgUrl = img.join(":")
+        // console.log(imgUrl)
+        // (img);
+        setAvatarBlob(compressedResult);
+        // compressedResult has the compressed file.
+        // Use the compressed file to upload the images to your server.
+        // setCompressedFile(res)
+      },
+    });
+  };
+
   return (
     <Box
       backgroundColor={"blue"}
@@ -104,6 +112,8 @@ const Signup = () => {
     >
       <Box backgroundColor={"yellow"} padding={5}>
         {renderInput("username", username, setUsername)}
+        <Input type="file" accept="image/*" onChange={(e) => compressPic(e)} />
+        {avatar && <Image src={avatar} boxSize={10} />}
         {renderInput("height", height, setHeight)}
         {renderInput("position", position, setPosition)}
         {renderInput("play like", playLike, setPlayLike)}
