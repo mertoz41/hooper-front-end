@@ -56,6 +56,7 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
     <Box
       borderRadius={20}
       borderWidth={2}
+      boxShadow='2xl'
       backgroundColor="rgba(255,255,255,.2)"
       backdropFilter="auto"
       backdropBlur="10px"

@@ -30,6 +30,7 @@ class App extends React.Component {
       })
         .then((resp) => resp.json())
         .then((resp) => {
+          console.log(resp.user);
           store.dispatch({ type: "LOG_USER_IN", currentUser: resp.user });
         });
     } else {

@@ -100,21 +100,17 @@ const CourtForum = ({ location, setSelectedMarker }) => {
         <Heading
           display={"flex"}
           flexDir="row"
-          textAlign={"right"}
+          textAlign={"left"}
           justifyContent="space-between"
           borderBottomWidth={1}
           borderBottomColor={"lightgray"}
         >
           <Box>
-            <CloseButton
-              size="sm"
-              backgroundColor={"white"}
-              onClick={() => setSelectedMarker(null)}
-            />
-          </Box>
-          <Box>
             <Text fontSize={16}>{location.name}</Text>
             <Text fontSize={12}>{location.address}</Text>
+          </Box>
+          <Box>
+            <CloseButton size="sm" onClick={() => setSelectedMarker(null)} />
           </Box>
         </Heading>
         <Box overflow={"auto"}>

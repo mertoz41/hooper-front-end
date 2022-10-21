@@ -8,6 +8,7 @@ import ProfileSection from "../components/ProfileSection";
 const ReusableBox = ({ children }) => {
   return (
     <Box
+      boxShadow="2xl"
       position="absolute"
       zIndex={1}
       width={370}
@@ -56,8 +57,13 @@ const Explore = () => {
         setSearchedUser={setSearchedUser}
         setDisplayNewCourt={setDisplayNewCourt}
       />
-      <ProfileSection />
-      {searchedUser ? null : null}
+
+      {searchedUser ? (
+        <ProfileSection
+          searchedUser={searchedUser}
+          setSearchedUser={setSearchedUser}
+        />
+      ) : null}
       {newCourt ? (
         <ReusableBox>
           <NewCourt
@@ -76,11 +82,11 @@ const Explore = () => {
           />
         </ReusableBox>
       ) : null}
-      <Map
+      {/* <Map
         selectedNewCourt={selectedNewCourt}
         selectMarker={setSelectedMarker}
         locations={locations}
-      />
+      /> */}
     </Box>
   );
 };
