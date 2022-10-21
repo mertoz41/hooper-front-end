@@ -98,7 +98,7 @@ const ProfileSection = ({ searchedUser, setSearchedUser }) => {
                 <Box>
                   {receivedFeedbacks.map((feed) => (
                     <Box>
-                      <Text>{feed.supervisee_username}</Text>
+                      <Text>{feed.supervisor_username}</Text>
                       <Text>{feed.message}</Text>
                     </Box>
                   ))}
