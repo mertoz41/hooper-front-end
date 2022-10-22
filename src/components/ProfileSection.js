@@ -15,13 +15,15 @@ import {
   Divider,
   Button,
 } from "@chakra-ui/react";
-
-const ProfileSection = ({ searchedUser, setSearchedUser }) => {
+import { connect } from "react-redux";
+import AvatarPlaceholder from "../assets/placeholder.jpeg";
+const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
   const [feedback, setFeedback] = useState("");
   const [receivedFeedbacks, setReceivedFeedbacks] = useState([]);
   const [givenFeedbacks, setGivenFeedbacks] = useState([]);
   useEffect(() => {
     setGivenFeedbacks(searchedUser.taught);
+    console.log(searchedUser.taught);
     setReceivedFeedbacks(searchedUser.taught_by);
   }, []);
   const postFeedback = (event) => {
@@ -65,15 +67,23 @@ const ProfileSection = ({ searchedUser, setSearchedUser }) => {
       backdropBlur="10px"
     >
       <Box flexDirection="column" display={"flex"}>
-        <Image borderRadius="full" h={180} src="https://bit.ly/dan-abramov" />
+        {searchedUser.avatar ? (
+          <Image
+            borderRadius="full"
+            h={180}
+            src={`http://localhost:3000${searchedUser.avatar}`}
+          />
+        ) : null}
 
         <Box marginTop={5} textAlign="center">
           <Heading>
             <Text fontSize={23}>{searchedUser.username}</Text>
           </Heading>
-          <Text>height: 6'3 position: SG</Text>
+          <Text>
+            height: {searchedUser.height} position: {searchedUser.position}
+          </Text>
           <Text></Text>
-          <Text>plays like Lebron James</Text>
+          <Text>plays like {searchedUser.plays_like}</Text>
         </Box>
       </Box>
       <Divider orientation="vertical" marginX={2} />
@@ -81,14 +91,24 @@ const ProfileSection = ({ searchedUser, setSearchedUser }) => {
         <Flex flex={1} justifyContent="space-between">
           <Tabs flex={1}>
             <TabList>
-              <Tab>feedbacks given</Tab>
-              <Tab>received</Tab>
+              <Tab>feedbacks received</Tab>
+              <Tab>given</Tab>
             </TabList>
             <TabPanels>
               <TabPanel>
                 <Box>
-                  {givenFeedbacks.map((feed) => (
+                  {receivedFeedbacks.map((feed) => (
                     <Box>
+                      <Image
+                        borderRadius={"full"}
+                        src={
+                          feed.supervisor_avatar
+                            ? `http://localhost:3000${feed.supervisor_avatar}`
+                            : AvatarPlaceholder
+                        }
+                        boxSize={20}
+                      />
+                      <Text>{feed.supervisor_username}</Text>
                       <Text>{feed.message}</Text>
                     </Box>
                   ))}
@@ -96,9 +116,18 @@ const ProfileSection = ({ searchedUser, setSearchedUser }) => {
               </TabPanel>
               <TabPanel>
                 <Box>
-                  {receivedFeedbacks.map((feed) => (
+                  {givenFeedbacks.map((feed) => (
                     <Box>
-                      <Text>{feed.supervisor_username}</Text>
+                      <Image
+                        borderRadius={"full"}
+                        src={
+                          feed.supervisee_avatar
+                            ? `http://localhost:3000${feed.supervisee_avatar}`
+                            : AvatarPlaceholder
+                        }
+                        boxSize={20}
+                      />
+                      <Text>to {feed.supervisee_username}</Text>
                       <Text>{feed.message}</Text>
                     </Box>
                   ))}
@@ -112,21 +141,24 @@ const ProfileSection = ({ searchedUser, setSearchedUser }) => {
           position={"absolute"}
           right={5}
         />
-        <form onSubmit={(e) => postFeedback(e)}>
-          <Flex>
-            <Input
-              placeholder={`give this hooper feedbacks...`}
-              borderColor={"lightgray"}
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-              borderWidth={2}
-            />
-            <Button type="submit">send</Button>
-          </Flex>
-        </form>
+        {currentUser.id !== searchedUser.id ? (
+          <form onSubmit={(e) => postFeedback(e)}>
+            <Flex>
+              <Input
+                placeholder={`give this hooper feedbacks...`}
+                borderColor={"lightgray"}
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+                borderWidth={2}
+              />
+              <Button type="submit">send</Button>
+            </Flex>
+          </form>
+        ) : null}
       </Flex>
     </Box>
   );
 };
+const mapStateToProps = (state) => ({ currentUser: state.currentUser });
 
-export default ProfileSection;
+export default connect(mapStateToProps)(ProfileSection);

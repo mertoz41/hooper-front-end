@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import "./App.css";
 import Explore from "./pages/Explore";
-import Login from "./components/login";
+import Login from "./pages/login";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Profile from "./components/profile";
-import Register from "./components/register";
+import Register from "./pages/register";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import store from "./redux/store";
@@ -66,8 +66,8 @@ class App extends React.Component {
             exact
             path="/register"
             render={() =>
-              this.props.registered ? (
-                <Redirect to="/login" />
+              this.props.currentUser ? (
+                <Redirect to="/explore" />
               ) : (
                 <Register unregister={this.unregister} />
               )

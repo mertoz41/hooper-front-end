@@ -82,11 +82,11 @@ const Explore = () => {
           />
         </ReusableBox>
       ) : null}
-      {/* <Map
+      <Map
         selectedNewCourt={selectedNewCourt}
         selectMarker={setSelectedMarker}
         locations={locations}
-      /> */}
+      />
     </Box>
   );
 };

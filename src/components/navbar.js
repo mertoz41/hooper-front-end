@@ -3,8 +3,8 @@ import hoop from "../hoopster.png";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import store from "../redux/store";
-import { Box, Image, Input, Text, Button, Icon } from "@chakra-ui/react";
-
+import { Box, Image, Input, Text, Button } from "@chakra-ui/react";
+import AvatarPlaceholder from "../assets/placeholder.jpeg";
 const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
   const [searching, setSearching] = useState("");
   const [hoopers, setHoopers] = useState([]);
@@ -56,7 +56,7 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
     <Box
       borderRadius={20}
       borderWidth={2}
-      boxShadow='2xl'
+      boxShadow="2xl"
       backgroundColor="rgba(255,255,255,.2)"
       backdropFilter="auto"
       backdropBlur="10px"
@@ -89,19 +89,29 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
             position="absolute"
             borderRadius={10}
             borderWidth={2}
-            // backgroundColor="red"
-            backgroundColor="rgba(255,255,255,1)"
-            backdropFilter="revert"
-            backdropBlur="10px"
+            backgroundColor="lightgray"
           >
             {hoopers.map((hooper) => (
               <Box
                 key={hooper.id}
                 borderBottomWidth={1}
                 cursor="pointer"
+                display={"flex"}
+                marginBottom={2}
                 onClick={() => fetchSearchedUser(hooper.id)}
               >
-                <Text>{hooper.username}</Text>
+                <Image
+                  borderRadius="full"
+                  src={
+                    hooper.avatar
+                      ? `http://localhost:3000${hooper.avatar}`
+                      : AvatarPlaceholder
+                  }
+                  boxSize={30}
+                />
+                <Text alignSelf={"center"} marginLeft={2}>
+                  {hooper.username}
+                </Text>
               </Box>
             ))}
           </Box>
