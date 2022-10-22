@@ -17,15 +17,15 @@ import {
 } from "@chakra-ui/react";
 import { connect } from "react-redux";
 import AvatarPlaceholder from "../assets/placeholder.jpeg";
+import { getTiming } from "../utilities";
 const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
   const [feedback, setFeedback] = useState("");
   const [receivedFeedbacks, setReceivedFeedbacks] = useState([]);
   const [givenFeedbacks, setGivenFeedbacks] = useState([]);
   useEffect(() => {
     setGivenFeedbacks(searchedUser.taught);
-    console.log(searchedUser.taught);
     setReceivedFeedbacks(searchedUser.taught_by);
-  }, []);
+  }, [searchedUser]);
   const postFeedback = (event) => {
     event.preventDefault();
     fetch("http://localhost:3000/feedbacks", {
@@ -46,6 +46,27 @@ const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
         setFeedback("");
       });
   };
+  const renderFeedbacks = (feedbacks) =>
+    feedbacks.map((feed) => (
+      <Flex borderBottomWidth={1}>
+        <Image
+          borderRadius={"full"}
+          src={
+            feed.supervisee_avatar
+              ? `http://localhost:3000${feed.supervisee_avatar}`
+              : AvatarPlaceholder
+          }
+          boxSize={55}
+        />
+        <Box marginLeft={2} w="100%">
+          <Flex justifyContent={"space-between"}>
+            <Text fontWeight={"bold"}>to {feed.supervisee_username}</Text>
+            <Text fontSize={11}>{getTiming(feed.created_at)}</Text>
+          </Flex>
+          <Text>{feed.message}</Text>
+        </Box>
+      </Flex>
+    ));
   return (
     <Box
       boxShadow="2xl"
@@ -97,8 +118,9 @@ const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
             <TabPanels>
               <TabPanel>
                 <Box>
-                  {receivedFeedbacks.map((feed) => (
-                    <Box>
+                  {renderFeedbacks(receivedFeedbacks)}
+                  {/* {receivedFeedbacks.map((feed) => (
+                    <Flex borderBottomWidth={1}>
                       <Image
                         borderRadius={"full"}
                         src={
@@ -110,14 +132,15 @@ const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
                       />
                       <Text>{feed.supervisor_username}</Text>
                       <Text>{feed.message}</Text>
-                    </Box>
-                  ))}
+                    </Flex>
+                  ))} */}
                 </Box>
               </TabPanel>
               <TabPanel>
                 <Box>
-                  {givenFeedbacks.map((feed) => (
-                    <Box>
+                  {renderFeedbacks(givenFeedbacks)}
+                  {/* {givenFeedbacks.map((feed) => (
+                    <Flex borderBottomWidth={1}>
                       <Image
                         borderRadius={"full"}
                         src={
@@ -125,12 +148,21 @@ const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
                             ? `http://localhost:3000${feed.supervisee_avatar}`
                             : AvatarPlaceholder
                         }
-                        boxSize={20}
+                        boxSize={55}
                       />
-                      <Text>to {feed.supervisee_username}</Text>
-                      <Text>{feed.message}</Text>
-                    </Box>
-                  ))}
+                      <Box marginLeft={2} w="100%">
+                        <Flex justifyContent={"space-between"}>
+                          <Text fontWeight={"bold"}>
+                            to {feed.supervisee_username}
+                          </Text>
+                          <Text fontSize={11}>
+                            {getTiming(feed.created_at)}
+                          </Text>
+                        </Flex>
+                        <Text>{feed.message}</Text>
+                      </Box>
+                    </Flex>
+                  ))} */}
                 </Box>
               </TabPanel>
             </TabPanels>
@@ -146,7 +178,6 @@ const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
             <Flex>
               <Input
                 placeholder={`give this hooper feedbacks...`}
-                borderColor={"lightgray"}
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
                 borderWidth={2}

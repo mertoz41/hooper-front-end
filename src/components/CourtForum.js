@@ -9,7 +9,8 @@ import {
   Input,
   Flex,
 } from "@chakra-ui/react";
-
+import AvatarPlaceholder from "../assets/placeholder.jpeg";
+import { getTiming } from "../utilities";
 const CourtForum = ({ location, setSelectedMarker }) => {
   const [message, setMessage] = useState("");
   const [postings, setPostings] = useState([]);
@@ -45,49 +46,7 @@ const CourtForum = ({ location, setSelectedMarker }) => {
         setMessage("");
       });
   };
-  const getTiming = (created_at) => {
-    let _MS_PER_DAY = 1000 * 60 * 60 * 24;
-    let timeNow = new Date();
-    let created = new Date(created_at);
-    // minutes
-    let difference = timeNow - created;
-    let differenceMinute = Math.floor(difference / 1000 / 60);
-    let differenceHour = Math.floor(difference / 1000 / 60 / 60);
 
-    let utcnow = Date.UTC(
-      timeNow.getFullYear(),
-      timeNow.getMonth(),
-      timeNow.getDate()
-    );
-    let utcitem = Date.UTC(
-      created.getFullYear(),
-      created.getMonth(),
-      created.getDate()
-    );
-
-    if (differenceMinute < 60) {
-      if (differenceMinute < 1) {
-        return "just now";
-      } else {
-        return `${differenceMinute} ${
-          differenceMinute == 1 ? "minute" : "minutes"
-        } ago`;
-      }
-    } else if (differenceHour < 24) {
-      if (differenceHour == 1) {
-        return `${differenceHour} hour ago`;
-      } else {
-        return `${differenceHour} hours ago`;
-      }
-    } else {
-      let result = Math.floor((utcnow - utcitem) / _MS_PER_DAY);
-      if (result == 1) {
-        return `${result} day ago`;
-      } else {
-        return `${result} days ago`;
-      }
-    }
-  };
   return (
     <Box
       display={"flex"}
@@ -96,44 +55,55 @@ const CourtForum = ({ location, setSelectedMarker }) => {
       flexDir={"column"}
       height={"100%"}
     >
+      <Heading
+        display={"flex"}
+        flexDir="row"
+        textAlign={"left"}
+        justifyContent="space-between"
+        borderBottomWidth={1}
+        borderBottomColor={"lightgray"}
+      >
+        <Box>
+          <Text fontSize={16}>{location.name}</Text>
+          <Text fontSize={12}>{location.address}</Text>
+        </Box>
+        <Box>
+          <CloseButton size="sm" onClick={() => setSelectedMarker(null)} />
+        </Box>
+      </Heading>
       <Box overflow={"auto"}>
-        <Heading
-          display={"flex"}
-          flexDir="row"
-          textAlign={"left"}
-          justifyContent="space-between"
-          borderBottomWidth={1}
-          borderBottomColor={"lightgray"}
-        >
-          <Box>
-            <Text fontSize={16}>{location.name}</Text>
-            <Text fontSize={12}>{location.address}</Text>
-          </Box>
-          <Box>
-            <CloseButton size="sm" onClick={() => setSelectedMarker(null)} />
-          </Box>
-        </Heading>
         <Box overflow={"auto"}>
-          {postings.length
-            ? postings.map((post) => (
-                <Box
-                  key={post.id}
-                  borderBottomWidth={1}
-                  borderBottomColor={"darkgray"}
-                  marginBottom={2}
-                >
-                  <Flex justifyContent={"space-between"}>
-                    <Text fontSize={16} fontWeight={"bold"}>
-                      {post.username}
-                    </Text>
-                    <Text alignSelf={"flex-end"} fontSize={11}>
-                      {getTiming(post.created_at)}
-                    </Text>
-                  </Flex>
-                  <Text>{post.message}</Text>
-                </Box>
-              ))
-            : null}
+          {postings.length ? (
+            postings.map((post) => (
+              <Box
+                key={post.id}
+                borderBottomWidth={1}
+                borderBottomColor={"darkgray"}
+                marginBottom={3}
+              >
+                <Flex>
+                  <Image
+                    src={post.avatar ? post.avatar : AvatarPlaceholder}
+                    boxSize={55}
+                    borderRadius="full"
+                  />
+                  <Box marginLeft={2} w="100%">
+                    <Flex justifyContent={"space-between"}>
+                      <Text fontSize={16} fontWeight={"bold"}>
+                        {post.username}
+                      </Text>
+                      <Text alignSelf={"flex-start"} fontSize={11}>
+                        {getTiming(post.created_at)}
+                      </Text>
+                    </Flex>
+                    <Text>{post.message}</Text>
+                  </Box>
+                </Flex>
+              </Box>
+            ))
+          ) : (
+            <Text textAlign="center">No postings here yet...</Text>
+          )}
         </Box>
       </Box>
       <form onSubmit={(e) => postPosting(e)}>

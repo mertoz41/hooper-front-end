@@ -21,7 +21,6 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
       })
         .then((resp) => resp.json())
         .then((resp) => {
-          console.log(resp);
           setHoopers(resp);
         });
     }

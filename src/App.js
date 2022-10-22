@@ -73,6 +73,13 @@ class App extends React.Component {
               )
             }
           />
+          <Route
+            exact
+            path={"/"}
+            render={() =>
+              this.props.currentUser ? <Explore /> : <Redirect to="/login" />
+            }
+          />
 
           <Route
             exact
