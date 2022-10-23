@@ -8,7 +8,6 @@ function reducer(state = initialState, action) {
       return { ...state, currentUser: action.currentUser };
     case "LOG_USER_OUT":
       return { ...initialState };
-
     default:
       return state;
   }
