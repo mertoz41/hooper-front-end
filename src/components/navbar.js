@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import hoop from "../hoopster.png";
-import { withRouter } from "react-router";
+import hoop from "../assets/hoopster.png";
 import { connect } from "react-redux";
 import store from "../redux/store";
 import { Box, Image, Input, Text, Button } from "@chakra-ui/react";
-import AvatarPlaceholder from "../assets/placeholder.jpeg";
-const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
+import AvatarPlaceholder from "../assets/placeholder.png";
+import { API_ROOT } from "../utilities";
+const NavBar = ({ setSearchedUser, setDisplayNewCourt, currentUser }) => {
   const [searching, setSearching] = useState("");
   const [hoopers, setHoopers] = useState([]);
 
@@ -13,7 +13,7 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
     let hooper = event.target.value;
     setSearching(hooper);
     if (event.target.value.length > 2) {
-      fetch(`http://localhost:3000/users/search/${hooper}`, {
+      fetch(`${API_ROOT}/users/search/${hooper}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -27,7 +27,7 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
   };
 
   const fetchSearchedUser = (id) => {
-    fetch(`http://localhost:3000/users/${id}`, {
+    fetch(`${API_ROOT}/users/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -44,11 +44,6 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
   const logout = () => {
     store.dispatch({ type: "LOG_USER_OUT" });
     localStorage.clear();
-    this.props.history.push("/login");
-  };
-
-  const userProfile = () => {
-    this.fetchSearchedUser(this.props.currentUser.id);
   };
 
   return (
@@ -73,7 +68,6 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
         <Input
           w="100%"
           placeholder="search hoopers..."
-          borderColor={"lightgray"}
           value={searching}
           onChange={(e) => searchUsers(e)}
         />
@@ -84,17 +78,19 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
             left={10}
             width={160}
             h={300}
+            backgroundColor="transparent"
+            backdropFilter="auto"
+            backdropBlur="10px"
             padding={5}
             position="absolute"
             borderRadius={10}
             borderWidth={2}
-            backgroundColor="lightgray"
           >
             {hoopers.map((hooper) => (
               <Box
                 key={hooper.id}
                 borderBottomWidth={1}
-                cursor="pointer"
+                backdropBlur="10px"
                 display={"flex"}
                 marginBottom={2}
                 onClick={() => fetchSearchedUser(hooper.id)}
@@ -103,7 +99,7 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
                   borderRadius="full"
                   src={
                     hooper.avatar
-                      ? `http://localhost:3000${hooper.avatar}`
+                      ? `${API_ROOT}${hooper.avatar}`
                       : AvatarPlaceholder
                   }
                   boxSize={30}
@@ -126,17 +122,30 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
         h="100%"
         alignItems="center"
       >
-        <Button size={"sm"} className="username-button" onClick={userProfile}>
+        <Button
+          size={"sm"}
+          marginRight={2}
+          borderWidth={2}
+          backgroundColor="transparent"
+          onClick={() => setSearchedUser(currentUser)}
+        >
           profile
         </Button>
         <Button
           size={"sm"}
-          className="username-button"
+          marginRight={2}
+          borderWidth={2}
+          backgroundColor="transparent"
           onClick={() => setDisplayNewCourt(true)}
         >
           add
         </Button>
-        <Button size={"sm"} icon onClick={logout}>
+        <Button
+          size={"sm"}
+          onClick={logout}
+          borderWidth={2}
+          backgroundColor="transparent"
+        >
           logout
         </Button>
       </Box>
@@ -144,4 +153,6 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt }) => {
   );
 };
 
-export default NavBar;
+const mapStateToProps = (state) => ({ currentUser: state.currentUser });
+
+export default connect(mapStateToProps)(NavBar);

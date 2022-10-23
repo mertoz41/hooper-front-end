@@ -5,6 +5,7 @@ import { Box } from "@chakra-ui/react";
 import Map from "../components/Map";
 import NewCourt from "../components/NewCourt";
 import ProfileSection from "../components/ProfileSection";
+import { API_ROOT } from "../utilities";
 const ReusableBox = ({ children }) => {
   return (
     <Box
@@ -34,7 +35,7 @@ const Explore = () => {
   const [newCourt, setDisplayNewCourt] = useState(false);
   useEffect(() => {
     let token = localStorage.getItem("jwt");
-    fetch("http://localhost:3000/locations", {
+    fetch(`${API_ROOT}/locations`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -51,6 +52,20 @@ const Explore = () => {
     setDisplayNewCourt(false);
   };
 
+  const selectUser = (id) => {
+    fetch(`${API_ROOT}/users/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    })
+      .then((resp) => resp.json())
+      .then((user) => {
+        setSelectedMarker(null);
+        setSearchedUser(user);
+      });
+  };
+
   return (
     <Box h="100vh">
       <Navbar
@@ -62,6 +77,7 @@ const Explore = () => {
         <ProfileSection
           searchedUser={searchedUser}
           setSearchedUser={setSearchedUser}
+          selectUser={selectUser}
         />
       ) : null}
       {newCourt ? (
@@ -79,6 +95,7 @@ const Explore = () => {
           <CourtForum
             setSelectedMarker={setSelectedMarker}
             location={selectedMarker}
+            selectUser={selectUser}
           />
         </ReusableBox>
       ) : null}

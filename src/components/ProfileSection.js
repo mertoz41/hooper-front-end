@@ -16,9 +16,14 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { connect } from "react-redux";
-import AvatarPlaceholder from "../assets/placeholder.jpeg";
-import { getTiming } from "../utilities";
-const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
+import AvatarPlaceholder from "../assets/placeholder.png";
+import { getTiming, API_ROOT } from "../utilities";
+const ProfileSection = ({
+  searchedUser,
+  setSearchedUser,
+  currentUser,
+  selectUser,
+}) => {
   const [feedback, setFeedback] = useState("");
   const [receivedFeedbacks, setReceivedFeedbacks] = useState([]);
   const [givenFeedbacks, setGivenFeedbacks] = useState([]);
@@ -28,7 +33,7 @@ const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
   }, [searchedUser]);
   const postFeedback = (event) => {
     event.preventDefault();
-    fetch("http://localhost:3000/feedbacks", {
+    fetch(`${API_ROOT}/feedbacks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,21 +51,32 @@ const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
         setFeedback("");
       });
   };
-  const renderFeedbacks = (feedbacks) =>
+  const renderFeedbacks = (feedbacks, received) =>
     feedbacks.map((feed) => (
-      <Flex borderBottomWidth={1}>
+      <Flex borderBottomWidth={1} key={feed.id}>
         <Image
           borderRadius={"full"}
           src={
-            feed.supervisee_avatar
-              ? `http://localhost:3000${feed.supervisee_avatar}`
+            (received && feed.supervisor_avatar) ||
+            (!received && feed.supervisee_avatar)
+              ? `${API_ROOT}${
+                  received ? feed.supervisor_avatar : feed.supervisee_avatar
+                }`
               : AvatarPlaceholder
           }
           boxSize={55}
         />
         <Box marginLeft={2} w="100%">
           <Flex justifyContent={"space-between"}>
-            <Text fontWeight={"bold"}>to {feed.supervisee_username}</Text>
+            <Text
+              cursor={"pointer"}
+              fontWeight={"bold"}
+              onClick={() =>
+                selectUser(received ? feed.supervisor_id : feed.supervisee_id)
+              }
+            >
+              {received ? feed.supervisor_username : feed.supervisee_username}
+            </Text>
             <Text fontSize={11}>{getTiming(feed.created_at)}</Text>
           </Flex>
           <Text>{feed.message}</Text>
@@ -88,23 +104,29 @@ const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
       backdropBlur="10px"
     >
       <Box flexDirection="column" display={"flex"}>
-        {searchedUser.avatar ? (
-          <Image
-            borderRadius="full"
-            h={180}
-            src={`http://localhost:3000${searchedUser.avatar}`}
-          />
-        ) : null}
+        <Image
+          borderRadius="full"
+          h={180}
+          src={
+            searchedUser.avatar
+              ? `${API_ROOT}${searchedUser.avatar}`
+              : AvatarPlaceholder
+          }
+        />
 
         <Box marginTop={5} textAlign="center">
           <Heading>
             <Text fontSize={23}>{searchedUser.username}</Text>
           </Heading>
           <Text>
-            height: {searchedUser.height} position: {searchedUser.position}
+            height: {searchedUser.height ? searchedUser.height : "N/A"}{" "}
+            position: {searchedUser.position ? searchedUser.position : "N/A"}
           </Text>
           <Text></Text>
-          <Text>plays like {searchedUser.plays_like}</Text>
+          <Text>
+            plays like{" "}
+            {searchedUser.plays_like ? searchedUser.plays_like : "N/A"}
+          </Text>
         </Box>
       </Box>
       <Divider orientation="vertical" marginX={2} />
@@ -112,57 +134,33 @@ const ProfileSection = ({ searchedUser, setSearchedUser, currentUser }) => {
         <Flex flex={1} justifyContent="space-between">
           <Tabs flex={1}>
             <TabList>
-              <Tab>feedbacks received</Tab>
-              <Tab>given</Tab>
+              <Tab>
+                feedbacks received (
+                {receivedFeedbacks ? receivedFeedbacks.length : 0})
+              </Tab>
+              <Tab>given ({givenFeedbacks ? givenFeedbacks.length : 0})</Tab>
             </TabList>
             <TabPanels>
               <TabPanel>
                 <Box>
-                  {renderFeedbacks(receivedFeedbacks)}
-                  {/* {receivedFeedbacks.map((feed) => (
-                    <Flex borderBottomWidth={1}>
-                      <Image
-                        borderRadius={"full"}
-                        src={
-                          feed.supervisor_avatar
-                            ? `http://localhost:3000${feed.supervisor_avatar}`
-                            : AvatarPlaceholder
-                        }
-                        boxSize={20}
-                      />
-                      <Text>{feed.supervisor_username}</Text>
-                      <Text>{feed.message}</Text>
-                    </Flex>
-                  ))} */}
+                  {receivedFeedbacks && receivedFeedbacks.length ? (
+                    renderFeedbacks(receivedFeedbacks, true)
+                  ) : (
+                    <Text>
+                      {searchedUser.username} has not received any feedbacks.
+                    </Text>
+                  )}
                 </Box>
               </TabPanel>
               <TabPanel>
                 <Box>
-                  {renderFeedbacks(givenFeedbacks)}
-                  {/* {givenFeedbacks.map((feed) => (
-                    <Flex borderBottomWidth={1}>
-                      <Image
-                        borderRadius={"full"}
-                        src={
-                          feed.supervisee_avatar
-                            ? `http://localhost:3000${feed.supervisee_avatar}`
-                            : AvatarPlaceholder
-                        }
-                        boxSize={55}
-                      />
-                      <Box marginLeft={2} w="100%">
-                        <Flex justifyContent={"space-between"}>
-                          <Text fontWeight={"bold"}>
-                            to {feed.supervisee_username}
-                          </Text>
-                          <Text fontSize={11}>
-                            {getTiming(feed.created_at)}
-                          </Text>
-                        </Flex>
-                        <Text>{feed.message}</Text>
-                      </Box>
-                    </Flex>
-                  ))} */}
+                  {givenFeedbacks && givenFeedbacks.length ? (
+                    renderFeedbacks(givenFeedbacks, false)
+                  ) : (
+                    <Text>
+                      {searchedUser.username} has not given any feedbacks.
+                    </Text>
+                  )}
                 </Box>
               </TabPanel>
             </TabPanels>

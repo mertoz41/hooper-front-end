@@ -1,99 +1,88 @@
-import React,{Component} from "react"
-import { NavLink, Redirect } from "react-router-dom"
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router";
-import { Button, Form, Grid, Header, Image, Message, Segment, Icon} from 'semantic-ui-react'
-import store from '../redux/store'
-
-class Login extends Component {
-  state = {
-    username: "",
-    password: ""
-    }
-
-  setEmpty = () =>{
-
-    this.setState({
-      username: "",
-      password: ""
-    })
-
-  }
-
-  fixState = (event) => {
-    // controlled forms
-
-    let name = event.target.name
-    let value = event.target.value
-    this.setState({ [name]: value})
-
-  }
-
-  
-
-  login = (event) =>{
-
-    // post request for user information
-     
-    event.preventDefault()
-    fetch('http://localhost:3000/login', {
+import Hoop from "../assets/ball.gif";
+import store from "../redux/store";
+import { API_ROOT } from "../utilities";
+import { Box, Button, Heading, Input, Text, Image } from "@chakra-ui/react";
+const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const history = useHistory();
+  const login = (event) => {
+    event.preventDefault();
+    fetch(`${API_ROOT}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept" : "application/json"
+        Accept: "application/json",
       },
-      body: JSON.stringify(this.state)
+      body: JSON.stringify({ username: username, password: password }),
     })
-    .then(resp => resp.json())
-    .then(resp => {
-      
-      if (resp.user_data){
+      .then((resp) => resp.json())
+      .then((resp) => {
+        if (resp.user_data) {
+          localStorage.setItem("jwt", resp.token);
+          store.dispatch({ type: "LOG_USER_IN", currentUser: resp.user_data });
+        } else {
+          alert(resp.message);
+        }
+      });
+  };
 
-        localStorage.setItem('jwt', resp.token)
-        store.dispatch({type: "LOG_USER_IN", currentUser: resp.user_data})
+  return (
+    <Box h="100vh" display="flex" flexDir={"column"} justifyContent={"center"}>
+      <Box
+        w="30%"
+        alignSelf="center"
+        padding={10}
+        borderWidth={2}
+        justifyContent="center"
+        borderRadius={10}
+      >
+        <Image src={Hoop} w={40} m="0 auto" />
+        <Heading marginBottom={5} alignSelf="center" textAlign={"center"}>
+          <Text>Hooper App</Text>
+          <Text fontSize={22}>Login</Text>
+        </Heading>
+        <form onSubmit={(e) => login(e)}>
+          <Input
+            placeholder="username"
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
+            marginBottom={5}
+          />
+          <Input
+            placeholder="password"
+            type={"password"}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            marginBottom={5}
+          />
+          <Button
+            flex={1}
+            w="100%"
+            type="submit"
+            backgroundColor="transparent"
+            borderWidth={2}
+            marginBottom={5}
+          >
+            login
+          </Button>
+          <Button
+            flex={1}
+            w="100%"
+            type="submit"
+            backgroundColor="transparent"
+            borderWidth={2}
+            onClick={() => history.push("/register")}
+          >
+            create a new account
+          </Button>
+        </form>
+      </Box>
+    </Box>
+  );
+};
 
-      } else {
-
-        alert(resp.message)
-        this.setEmpty()
-        
-      }
-    })
-  }
-
-    render(){
-        return(
-            <div className="login-container">
-              <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-                <Grid.Column style={{ maxWidth: 450 }}>
-                  <div className="app-title">
-                  <h1>Hooper App</h1>
-                  </div>
-                  <Icon.Group size='big'>
-                    <Icon size='big' name='basketball ball' color="orange"/>
-                  </Icon.Group>
-                  <Header as='h2' color='black' textAlign='center'>
-                    Log in to your account
-                  </Header>
-                  <Form size='large' onSubmit={event => this.login(event)}>
-                    <Segment stacked>
-                      <Form.Input fluid icon='user' iconPosition='left' placeholder='Username' name="username" value={this.state.username} onChange={event => this.fixState(event)}/>
-                      <Form.Input fluid icon='lock' iconPosition='left' placeholder='Password' type='password' name='password' value={this.state.password} onChange={event => this.fixState(event)}/>
-                      <Button color='grey' fluid size='large'>
-                        Login
-                      </Button>
-                    </Segment>
-                  </Form>
-                  <NavLink to="/register" exact>
-                    <Message onClick={this.props.register}>
-                      <strong>Sign up for an account</strong>
-                    </Message>
-                  </NavLink>
-                </Grid.Column>
-              </Grid>
-            </div>
-        )
-    }
-}
-
-
-export default withRouter(Login)
+export default withRouter(Login);

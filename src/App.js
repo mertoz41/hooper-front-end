@@ -1,28 +1,21 @@
 import React, { Fragment } from "react";
-import "./App.css";
 import Explore from "./pages/Explore";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Profile from "./components/profile";
 import Register from "./pages/register";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import store from "./redux/store";
+import { API_ROOT } from "./utilities";
 
 class App extends React.Component {
-  state = {
-    loggedIn: false,
-    registered: true,
-  };
-
   componentDidMount() {
-    // this.fetchUsers();
     this.checkJwt();
   }
 
   checkJwt = () => {
     if (localStorage.getItem("jwt")) {
-      fetch("http://localhost:3000/check", {
+      fetch(`${API_ROOT}/check`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -30,32 +23,12 @@ class App extends React.Component {
       })
         .then((resp) => resp.json())
         .then((resp) => {
-          console.log(resp.user);
-          store.dispatch({ type: "LOG_USER_IN", currentUser: resp.user });
+          console.log(resp);
+          store.dispatch({ type: "LOG_USER_IN", currentUser: resp });
         });
     } else {
       this.props.history.push("/login");
     }
-  };
-
-  fetchUsers = () => {
-    fetch("http://localhost:3000/users")
-      .then((resp) => resp.json())
-      .then((users) => {
-        store.dispatch({ type: "ALL_USERS_INCOMING", allUsers: users });
-      });
-  };
-
-  register = () => {
-    this.setState({
-      registered: true,
-    });
-  };
-  unregister = () => {
-    this.fetchUsers();
-    this.setState({
-      registered: false,
-    });
   };
 
   render() {
@@ -66,11 +39,7 @@ class App extends React.Component {
             exact
             path="/register"
             render={() =>
-              this.props.currentUser ? (
-                <Redirect to="/explore" />
-              ) : (
-                <Register unregister={this.unregister} />
-              )
+              this.props.currentUser ? <Redirect to="/explore" /> : <Register />
             }
           />
           <Route
@@ -96,21 +65,6 @@ class App extends React.Component {
                 <Redirect to="/explore" />
               ) : (
                 <Login register={this.register} />
-              )
-            }
-          />
-
-          <Route
-            exact
-            path="/profile/:name"
-            render={() =>
-              this.props.searchedUser ? (
-                <Profile
-                  addFeedback={this.addFeedback}
-                  feedbacks={this.state.feedbacks}
-                />
-              ) : (
-                <Redirect to="/login" />
               )
             }
           />

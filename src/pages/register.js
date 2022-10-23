@@ -4,7 +4,7 @@ import { Box, Text, Input, Image, Button } from "@chakra-ui/react";
 import Compressor from "compressorjs";
 import axios from "axios";
 import store from "../redux/store";
-
+import { API_ROOT } from "../utilities";
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState(null);
@@ -20,14 +20,12 @@ const Signup = () => {
       let formData = new FormData();
       formData.append("username", username);
       formData.append("password", password);
-      let avatarSplit = avatarBlob.name.split(".");
-      let avatarEnding = avatarSplit[avatarSplit.length - 1];
       formData.append("avatar", avatarBlob);
       formData.append("position", position);
       formData.append("height", height);
       formData.append("plays_like", playLike);
       await axios
-        .post("http://localhost:3000/users", formData, {
+        .post(`${API_ROOT}/users`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -42,7 +40,7 @@ const Signup = () => {
     }
   };
   const logUserIn = (username, password) => {
-    fetch("http://localhost:3000/login", {
+    fetch(`${API_ROOT}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

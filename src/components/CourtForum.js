@@ -9,16 +9,16 @@ import {
   Input,
   Flex,
 } from "@chakra-ui/react";
-import AvatarPlaceholder from "../assets/placeholder.jpeg";
-import { getTiming } from "../utilities";
-const CourtForum = ({ location, setSelectedMarker }) => {
+import AvatarPlaceholder from "../assets/placeholder.png";
+import { API_ROOT, getTiming } from "../utilities";
+const CourtForum = ({ location, setSelectedMarker, selectUser }) => {
   const [message, setMessage] = useState("");
   const [postings, setPostings] = useState([]);
   useEffect(() => {
     getPostings(location.id);
   }, [location]);
   const getPostings = (id) => {
-    fetch(`http://localhost:3000/postings/${id}`, {
+    fetch(`${API_ROOT}/postings/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -31,7 +31,7 @@ const CourtForum = ({ location, setSelectedMarker }) => {
   };
   const postPosting = (e) => {
     e.preventDefault();
-    fetch("http://localhost:3000/postings", {
+    fetch(`${API_ROOT}/postings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -72,39 +72,37 @@ const CourtForum = ({ location, setSelectedMarker }) => {
         </Box>
       </Heading>
       <Box overflow={"auto"}>
-        <Box overflow={"auto"}>
-          {postings.length ? (
-            postings.map((post) => (
-              <Box
-                key={post.id}
-                borderBottomWidth={1}
-                borderBottomColor={"darkgray"}
-                marginBottom={3}
-              >
-                <Flex>
-                  <Image
-                    src={post.avatar ? post.avatar : AvatarPlaceholder}
-                    boxSize={55}
-                    borderRadius="full"
-                  />
-                  <Box marginLeft={2} w="100%">
-                    <Flex justifyContent={"space-between"}>
-                      <Text fontSize={16} fontWeight={"bold"}>
-                        {post.username}
-                      </Text>
-                      <Text alignSelf={"flex-start"} fontSize={11}>
-                        {getTiming(post.created_at)}
-                      </Text>
-                    </Flex>
-                    <Text>{post.message}</Text>
-                  </Box>
-                </Flex>
-              </Box>
-            ))
-          ) : (
-            <Text textAlign="center">No postings here yet...</Text>
-          )}
-        </Box>
+        {postings.length ? (
+          postings.map((post) => (
+            <Box key={post.id} borderBottomWidth={1} marginBottom={3}>
+              <Flex>
+                <Image
+                  src={post.avatar ? post.avatar : AvatarPlaceholder}
+                  boxSize={55}
+                  borderRadius="full"
+                />
+                <Box marginLeft={2} w="100%">
+                  <Flex justifyContent={"space-between"}>
+                    <Text
+                      cursor={"pointer"}
+                      onClick={() => selectUser(post.user_id)}
+                      fontSize={16}
+                      fontWeight={"bold"}
+                    >
+                      {post.username}
+                    </Text>
+                    <Text alignSelf={"flex-start"} fontSize={11}>
+                      {getTiming(post.created_at)}
+                    </Text>
+                  </Flex>
+                  <Text>{post.message}</Text>
+                </Box>
+              </Flex>
+            </Box>
+          ))
+        ) : (
+          <Text textAlign="center">No postings here yet...</Text>
+        )}
       </Box>
       <form onSubmit={(e) => postPosting(e)}>
         <Flex>
@@ -114,7 +112,14 @@ const CourtForum = ({ location, setSelectedMarker }) => {
             placeholder="leave your message here..."
             onChange={(event) => setMessage(event.target.value)}
           />
-          <Button type="submit">send</Button>
+          <Button
+            marginLeft={2}
+            type="submit"
+            backgroundColor={"transparent"}
+            borderWidth={1}
+          >
+            send
+          </Button>
         </Flex>
       </form>
     </Box>

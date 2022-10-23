@@ -4,6 +4,7 @@ import GooglePlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-google-places-autocomplete";
+import { API_ROOT } from "../utilities";
 const NewCourt = ({
   setDisplayNewCourt,
   setSelectedNewCourt,
@@ -25,7 +26,7 @@ const NewCourt = ({
       });
   };
   const addNewCourt = () => {
-    fetch("http://localhost:3000/locations", {
+    fetch(`${API_ROOT}/locations`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,15 +43,15 @@ const NewCourt = ({
   };
   return (
     <Box display={"flex"} flex={1} flexDir={"column"} height={"100%"}>
-      <CloseButton
-        onClick={() => setDisplayNewCourt(false)}
-        size="sm"
-        backgroundColor={"white"}
-        position="absolute"
-      />
       <Heading marginBottom={5} fontSize={28} textAlign="center">
         Add a new court
       </Heading>
+      <CloseButton
+        onClick={() => setDisplayNewCourt(false)}
+        size="md"
+        position="absolute"
+        right={4}
+      />
       <GooglePlacesAutocomplete
         selectProps={{
           value,

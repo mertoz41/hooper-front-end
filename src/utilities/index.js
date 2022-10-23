@@ -44,4 +44,6 @@
     }
   };
 
-export {getTiming}
+  const API_ROOT = "http://localhost:3000"
+
+export {getTiming, API_ROOT}
