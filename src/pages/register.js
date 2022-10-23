@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router";
-import { Box, Text, Input, Image, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Input,
+  Heading,
+  Image,
+  Button,
+  Flex,
+  Spinner,
+} from "@chakra-ui/react";
 import Compressor from "compressorjs";
 import axios from "axios";
 import store from "../redux/store";
@@ -14,9 +23,11 @@ const Signup = () => {
   const [height, setHeight] = useState("");
   const [position, setPosition] = useState("");
   const [playLike, setPlayLike] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const registerUser = async () => {
     if (password === passwordConfirm) {
+      setLoading(true);
       let formData = new FormData();
       formData.append("username", username);
       formData.append("password", password);
@@ -53,6 +64,7 @@ const Signup = () => {
         if (resp.user_data) {
           localStorage.setItem("jwt", resp.token);
           store.dispatch({ type: "LOG_USER_IN", currentUser: resp.user_data });
+          setLoading(false);
         }
       });
   };
@@ -91,23 +103,53 @@ const Signup = () => {
   };
 
   return (
-    <Box
-      backgroundColor={"blue"}
-      h="100vh"
-      display={"flex"}
-      justifyContent="center"
-      alignItems={"center"}
-    >
-      <Box backgroundColor={"yellow"} padding={5}>
-        {renderInput("username", username, setUsername)}
-        <Input type="file" accept="image/*" onChange={(e) => compressPic(e)} />
-        {avatar && <Image src={avatar} boxSize={10} />}
-        {renderInput("height", height, setHeight)}
-        {renderInput("position", position, setPosition)}
-        {renderInput("play like", playLike, setPlayLike)}
-        {renderInput("password", password, setPassword)}
-        {renderInput("confirm password", passwordConfirm, setPasswordConfirm)}
-        <Button onClick={() => registerUser()}>sign up</Button>
+    <Box h="100vh" display="flex" flexDir={"column"} justifyContent={"center"}>
+      <Box
+        w="30%"
+        alignSelf="center"
+        padding={5}
+        borderWidth={2}
+        justifyContent="center"
+        borderRadius={10}
+      >
+        <Heading marginBottom={5} alignSelf="center" textAlign={"center"}>
+          <Text>Hooper App</Text>
+          <Text fontSize={22}>Register</Text>
+        </Heading>
+        <Box padding={5}>
+          {renderInput("username", username, setUsername)}
+          <Flex>
+            <Text flex={1}>avatar</Text>
+            <Input
+              flex={2}
+              type="file"
+              borderColor={"transparent"}
+              accept="image/*"
+              onChange={(e) => compressPic(e)}
+              textAlign="center"
+            />
+          </Flex>
+          {avatar && <Image src={avatar} boxSize={10} />}
+          {renderInput("height", height, setHeight)}
+          {renderInput("position", position, setPosition)}
+          {renderInput("play like", playLike, setPlayLike)}
+          {renderInput("password", password, setPassword)}
+          {renderInput("confirm password", passwordConfirm, setPasswordConfirm)}
+          {loading ? (
+            <Flex justifyContent={"center"}>
+              <Spinner size="lg" />
+            </Flex>
+          ) : (
+            <Button
+              onClick={() => registerUser()}
+              w={"100%"}
+              backgroundColor="transparent"
+              borderWidth={2}
+            >
+              sign up
+            </Button>
+          )}
+        </Box>
       </Box>
     </Box>
   );

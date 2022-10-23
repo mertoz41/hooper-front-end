@@ -25,11 +25,11 @@
         return "just now";
       } else {
         return `${differenceMinute} ${
-          differenceMinute == 1 ? "minute" : "minutes"
+          differenceMinute === 1 ? "minute" : "minutes"
         } ago`;
       }
     } else if (differenceHour < 24) {
-      if (differenceHour == 1) {
+      if (differenceHour === 1) {
         return `${differenceHour} hour ago`;
       } else {
         return `${differenceHour} hours ago`;

@@ -4,13 +4,23 @@ import { withRouter } from "react-router";
 import Hoop from "../assets/ball.gif";
 import store from "../redux/store";
 import { API_ROOT } from "../utilities";
-import { Box, Button, Heading, Input, Text, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Spinner,
+  Heading,
+  Input,
+  Text,
+  Image,
+} from "@chakra-ui/react";
 const Login = () => {
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const history = useHistory();
   const login = (event) => {
     event.preventDefault();
+    setLoading(true);
     fetch(`${API_ROOT}/login`, {
       method: "POST",
       headers: {
@@ -24,6 +34,7 @@ const Login = () => {
         if (resp.user_data) {
           localStorage.setItem("jwt", resp.token);
           store.dispatch({ type: "LOG_USER_IN", currentUser: resp.user_data });
+          setLoading(false);
         } else {
           alert(resp.message);
         }
@@ -59,26 +70,34 @@ const Login = () => {
             value={password}
             marginBottom={5}
           />
-          <Button
-            flex={1}
-            w="100%"
-            type="submit"
-            backgroundColor="transparent"
-            borderWidth={2}
-            marginBottom={5}
-          >
-            login
-          </Button>
-          <Button
-            flex={1}
-            w="100%"
-            type="submit"
-            backgroundColor="transparent"
-            borderWidth={2}
-            onClick={() => history.push("/register")}
-          >
-            create a new account
-          </Button>
+          {loading ? (
+            <Box justifyContent={"center"} display="flex">
+              <Spinner size={"lg"} />
+            </Box>
+          ) : (
+            <Box>
+              <Button
+                flex={1}
+                w="100%"
+                type="submit"
+                backgroundColor="transparent"
+                borderWidth={2}
+                marginBottom={5}
+              >
+                login
+              </Button>
+              <Button
+                flex={1}
+                w="100%"
+                type="submit"
+                backgroundColor="transparent"
+                borderWidth={2}
+                onClick={() => history.push("/register")}
+              >
+                create a new account
+              </Button>
+            </Box>
+          )}
         </form>
       </Box>
     </Box>

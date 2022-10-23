@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Box, Heading, CloseButton, Text, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  CloseButton,
+  Text,
+  Button,
+  useToast,
+} from "@chakra-ui/react";
 import GooglePlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -12,6 +19,8 @@ const NewCourt = ({
   setLocations,
 }) => {
   const [value, setValue] = useState(null);
+  const toast = useToast();
+
   const selectNewSpot = (spot) => {
     geocodeByAddress(spot.label)
       .then((results) => getLatLng(results[0]))
@@ -39,6 +48,13 @@ const NewCourt = ({
         setLocations((prevLoc) => [...prevLoc, resp]);
         setSelectedNewCourt(null);
         setDisplayNewCourt(false);
+        toast({
+          title: "Court added!",
+          description: "We appreciate your contribution!",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
       });
   };
   return (
@@ -76,9 +92,16 @@ const NewCourt = ({
       />
       {selectedNewCourt && (
         <Box fontWeight={500} display={"flex"} flexDir="column">
-          <Text fontSize={16}>{selectedNewCourt.name}</Text>
-          <Text fontSize={12}>{selectedNewCourt.address}</Text>
-          <Button onClick={() => addNewCourt()} marginTop={10}>
+          <Box marginTop={5}>
+            <Text fontSize={16}>{selectedNewCourt.name}</Text>
+            <Text fontSize={12}>{selectedNewCourt.address}</Text>
+          </Box>
+          <Button
+            onClick={() => addNewCourt()}
+            marginTop={5}
+            backgroundColor="transparent"
+            borderWidth={2}
+          >
             add court
           </Button>
         </Box>

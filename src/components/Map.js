@@ -22,16 +22,17 @@ const GoogleMapExample = withScriptjs(
           }}
         />
       )}
-      {props.locations.map((marker) => (
-        <Marker
-          key={marker.id}
-          position={{
-            lat: parseFloat(marker.latitude),
-            lng: parseFloat(marker.longitude),
-          }}
-          onClick={() => props.selectMarker(marker)}
-        />
-      ))}
+      {!props.selectedNewCourt &&
+        props.locations.map((marker) => (
+          <Marker
+            key={marker.id}
+            position={{
+              lat: parseFloat(marker.latitude),
+              lng: parseFloat(marker.longitude),
+            }}
+            onClick={() => props.selectMarker(marker)}
+          />
+        ))}
     </GoogleMap>
   ))
 );

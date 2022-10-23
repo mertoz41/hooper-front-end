@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import hoop from "../assets/hoopster.png";
 import { connect } from "react-redux";
 import store from "../redux/store";
-import { Box, Image, Input, Text, Button } from "@chakra-ui/react";
+import { Box, Image, Input, Text, Button, CloseButton } from "@chakra-ui/react";
 import AvatarPlaceholder from "../assets/placeholder.png";
 import { API_ROOT } from "../utilities";
 const NavBar = ({ setSearchedUser, setDisplayNewCourt, currentUser }) => {
@@ -41,6 +41,10 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt, currentUser }) => {
       });
   };
 
+  const clearSearch = () => {
+    setSearching("");
+    setHoopers([]);
+  };
   const logout = () => {
     store.dispatch({ type: "LOG_USER_OUT" });
     localStorage.clear();
@@ -54,7 +58,7 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt, currentUser }) => {
       backgroundColor="rgba(255,255,255,.2)"
       backdropFilter="auto"
       backdropBlur="10px"
-      paddingX={10}
+      paddingX={5}
       height={100}
       w="50%"
       display="flex"
@@ -65,12 +69,14 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt, currentUser }) => {
       m="0 auto"
     >
       <Box flex={1} h="100%" display="flex" alignItems="center" w="100%">
-        <Input
-          w="100%"
-          placeholder="search hoopers..."
-          value={searching}
-          onChange={(e) => searchUsers(e)}
-        />
+        <Box>
+          <Input
+            w="100%"
+            placeholder="search hoopers..."
+            value={searching}
+            onChange={(e) => searchUsers(e)}
+          />
+        </Box>
 
         {hoopers.length ? (
           <Box
@@ -78,7 +84,7 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt, currentUser }) => {
             left={10}
             width={160}
             h={300}
-            backgroundColor="transparent"
+            backgroundColor="white"
             backdropFilter="auto"
             backdropBlur="10px"
             padding={5}
@@ -86,6 +92,12 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt, currentUser }) => {
             borderRadius={10}
             borderWidth={2}
           >
+            <CloseButton
+              position="absolute"
+              right={0}
+              top={0}
+              onClick={() => clearSearch()}
+            />
             {hoopers.map((hooper) => (
               <Box
                 key={hooper.id}
