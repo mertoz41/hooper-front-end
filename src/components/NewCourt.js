@@ -58,8 +58,8 @@ const NewCourt = ({
         });
       })
       .catch((err) => {
-        renderError()
-      })
+        renderError();
+      });
   };
   return (
     <Box display={"flex"} flex={1} flexDir={"column"} height={"100%"}>

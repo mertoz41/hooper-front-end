@@ -1,89 +1,74 @@
-import React from "react";
-import { Box } from "@chakra-ui/react";
-import {
-  withGoogleMap,
-  GoogleMap,
-  Marker,
-  withScriptjs,
-} from "react-google-maps";
+import React, { useEffect } from "react";
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
-const GoogleMapExample = withScriptjs(
-  withGoogleMap((props) => (
+const containerStyle = {
+  width: "100%",
+  height: "100%",
+};
+
+const center = {
+  lat: 38.907852,
+  lng: -77.072807,
+};
+
+function Map({ locations, selectMarker, userLocation, selectedNewCourt }) {
+  useEffect(() => {
+    if (map && userLocation) {
+      map.panTo(userLocation);
+    }
+    if (map && selectedNewCourt) {
+      map.panTo({ lat: selectedNewCourt.lat, lng: selectedNewCourt.lng });
+    }
+  }, [userLocation, selectedNewCourt]);
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: `${process.env.REACT_APP_MAP_API_KEY}`,
+  });
+
+  const [map, setMap] = React.useState(null);
+
+  const onLoad = React.useCallback(function callback(map) {
+    const bounds = new window.google.maps.LatLngBounds(center);
+    map.fitBounds(bounds);
+    setMap(map);
+  }, []);
+
+  const onUnmount = React.useCallback(function callback(map) {
+    setMap(null);
+  }, []);
+
+  return isLoaded ? (
     <GoogleMap
-      ref={props.onMapMounted}
-      defaultCenter={{ lat: 38.907852, lng: -77.072807 }}
-      defaultZoom={13}
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={13}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
     >
-      {props.selectedNewCourt && (
+      {selectedNewCourt ? (
         <Marker
           position={{
-            lat: props.selectedNewCourt.lat,
-            lng: props.selectedNewCourt.lng,
+            lat: parseFloat(selectedNewCourt.lat),
+            lng: parseFloat(selectedNewCourt.lng),
           }}
         />
-      )}
-      {!props.selectedNewCourt &&
-        props.locations.map((marker) => (
+      ) : (
+        locations.map((marker) => (
           <Marker
             key={marker.id}
             position={{
               lat: parseFloat(marker.latitude),
               lng: parseFloat(marker.longitude),
             }}
-            onClick={() => props.selectMarker(marker)}
+            onClick={() => selectMarker(marker)}
           />
-        ))}
+        ))
+      )}
+      <></>
     </GoogleMap>
-  ))
-);
-class Map extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.selectedNewCourt &&
-      this.props.selectedNewCourt !== prevProps
-    ) {
-      this.map.panTo({
-        lat: parseFloat(this.props.selectedNewCourt.lat),
-        lng: parseFloat(this.props.selectedNewCourt.lng),
-      });
-    }
-    if (this.props.userLocation && this.props.userLocation !== prevProps) {
-      this.map.panTo({
-        lat: parseFloat(this.props.userLocation.lat),
-        lng: parseFloat(this.props.userLocation.lng),
-      });
-    }
-  }
-
-  chooseMarker = (marker) => {
-    this.props.selectMarker(marker);
-    this.map.panTo({
-      lat: parseFloat(marker.latitude),
-      lng: parseFloat(marker.longitude),
-    });
-  };
-  handleMapMounted = (map) => {
-    this.map = map;
-  };
-  render() {
-    return (
-      <Box h="100vh">
-        <GoogleMapExample
-          googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MAP_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `100%`, width: `100%` }} />}
-          mapElement={<div style={{ height: `100%`, borderRadius: 10 }} />}
-          locations={this.props.locations}
-          selectMarker={this.chooseMarker}
-          onMapMounted={this.handleMapMounted}
-          selectedNewCourt={this.props.selectedNewCourt}
-        />
-      </Box>
-    );
-  }
+  ) : (
+    <></>
+  );
 }
 
-export default Map;
+export default React.memo(Map);

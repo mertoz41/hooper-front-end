@@ -56,8 +56,8 @@ const CourtForum = ({
         setMessage("");
       })
       .catch((err) => {
-        renderError()
-      })
+        renderError();
+      });
   };
 
   return (
@@ -84,7 +84,7 @@ const CourtForum = ({
           <CloseButton size="sm" onClick={() => setSelectedMarker(null)} />
         </Box>
       </Heading>
-      <Box overflow={"auto"}>
+      <Box overflow={"auto"} flex={1}>
         {postings.length ? (
           postings.map((post) => (
             <Box key={post.id} borderBottomWidth={1} marginBottom={3}>
