@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import Explore from "./pages/Explore";
 import Login from "./pages/Login";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -58,13 +58,7 @@ const App = ({ currentUser, history }) => {
         <Route
           exact
           path="/login"
-          render={() =>
-            currentUser ? (
-              <Redirect to="/explore" />
-            ) : (
-              <Login />
-            )
-          }
+          render={() => (currentUser ? <Redirect to="/explore" /> : <Login />)}
         />
       </Switch>
     </Fragment>
