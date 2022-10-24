@@ -16,6 +16,7 @@ const NewCourt = ({
   setDisplayNewCourt,
   setSelectedNewCourt,
   selectedNewCourt,
+  renderError,
   setLocations,
 }) => {
   const [value, setValue] = useState(null);
@@ -55,7 +56,10 @@ const NewCourt = ({
           duration: 5000,
           isClosable: true,
         });
-      });
+      })
+      .catch((err) => {
+        renderError()
+      })
   };
   return (
     <Box display={"flex"} flex={1} flexDir={"column"} height={"100%"}>

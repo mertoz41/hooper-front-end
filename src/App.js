@@ -1,14 +1,17 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Explore from "./pages/Explore";
 import Login from "./pages/Login";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Register from "./pages/Register";
+import { useToast } from "@chakra-ui/react";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import store from "./redux/store";
-import { API_ROOT } from "./utilities";
+import { API_ROOT, errorToast } from "./utilities";
 
 const App = ({ currentUser, history }) => {
+  const [displayError, setDisplayError] = useState(false);
+  const toast = useToast();
   useEffect(() => {
     checkJwt();
   }, []);
@@ -23,6 +26,9 @@ const App = ({ currentUser, history }) => {
         .then((resp) => resp.json())
         .then((resp) => {
           store.dispatch({ type: "LOG_USER_IN", currentUser: resp });
+        })
+        .catch((err) => {
+          toast(errorToast);
         });
     } else {
       history.push("/login");
@@ -53,7 +59,13 @@ const App = ({ currentUser, history }) => {
         <Route
           exact
           path="/login"
-          render={() => (currentUser ? <Redirect to="/explore" /> : <Login />)}
+          render={() =>
+            currentUser ? (
+              <Redirect to="/explore" />
+            ) : (
+              <Login />
+            )
+          }
         />
       </Switch>
     </Fragment>

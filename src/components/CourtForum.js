@@ -11,9 +11,15 @@ import {
 } from "@chakra-ui/react";
 import AvatarPlaceholder from "../assets/placeholder.png";
 import { API_ROOT, getTiming } from "../utilities";
-const CourtForum = ({ location, setSelectedMarker, selectUser }) => {
+const CourtForum = ({
+  location,
+  setSelectedMarker,
+  selectUser,
+  renderError,
+}) => {
   const [message, setMessage] = useState("");
   const [postings, setPostings] = useState([]);
+
   useEffect(() => {
     getPostings(location.id);
   }, [location]);
@@ -27,6 +33,10 @@ const CourtForum = ({ location, setSelectedMarker, selectUser }) => {
       .then((resp) => resp.json())
       .then((resp) => {
         setPostings(resp.postings);
+      })
+      .catch((err) => {
+        setSelectedMarker(null);
+        renderError();
       });
   };
   const postPosting = (e) => {
@@ -44,7 +54,10 @@ const CourtForum = ({ location, setSelectedMarker, selectUser }) => {
         let updatedPostings = [...postings, resp.posting];
         setPostings(updatedPostings);
         setMessage("");
-      });
+      })
+      .catch((err) => {
+        renderError()
+      })
   };
 
   return (

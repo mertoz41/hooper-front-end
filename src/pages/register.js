@@ -8,12 +8,13 @@ import {
   Image,
   Button,
   Flex,
+  useToast,
   Spinner,
 } from "@chakra-ui/react";
 import Compressor from "compressorjs";
 import axios from "axios";
 import store from "../redux/store";
-import { API_ROOT } from "../utilities";
+import { API_ROOT, errorToast } from "../utilities";
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState(null);
@@ -24,6 +25,7 @@ const Signup = () => {
   const [position, setPosition] = useState("");
   const [playLike, setPlayLike] = useState("");
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const registerUser = async () => {
     if (password === passwordConfirm) {
@@ -45,7 +47,8 @@ const Signup = () => {
         .then((resp) => {
           alert("succezs");
           logUserIn(username, password);
-        });
+        })
+        .catch((err) => toast(errorToast));
     } else {
       alert("passwords dont match");
     }
@@ -66,7 +69,8 @@ const Signup = () => {
           store.dispatch({ type: "LOG_USER_IN", currentUser: resp.user_data });
           setLoading(false);
         }
-      });
+      })
+      .catch((err) => toast(errorToast));
   };
   const renderInput = (label, value, setFunc) => {
     return (

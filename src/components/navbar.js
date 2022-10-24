@@ -5,7 +5,12 @@ import store from "../redux/store";
 import { Box, Image, Input, Text, Button, CloseButton } from "@chakra-ui/react";
 import AvatarPlaceholder from "../assets/placeholder.png";
 import { API_ROOT } from "../utilities";
-const NavBar = ({ setSearchedUser, setDisplayNewCourt, currentUser }) => {
+const NavBar = ({
+  setSearchedUser,
+  setDisplayNewCourt,
+  currentUser,
+  renderError,
+}) => {
   const [searching, setSearching] = useState("");
   const [hoopers, setHoopers] = useState([]);
 
@@ -22,6 +27,9 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt, currentUser }) => {
         .then((resp) => resp.json())
         .then((resp) => {
           setHoopers(resp);
+        })
+        .catch((err) => {
+          renderError();
         });
     }
   };
@@ -38,7 +46,8 @@ const NavBar = ({ setSearchedUser, setDisplayNewCourt, currentUser }) => {
         setSearchedUser(user);
         setSearching("");
         setHoopers([]);
-      });
+      })
+      .catch((err) => renderError());
   };
 
   const clearSearch = () => {

@@ -23,6 +23,7 @@ const ProfileSection = ({
   setSearchedUser,
   currentUser,
   selectUser,
+  renderError,
 }) => {
   const [feedback, setFeedback] = useState("");
   const [receivedFeedbacks, setReceivedFeedbacks] = useState([]);
@@ -49,7 +50,8 @@ const ProfileSection = ({
         let updatedReceivedFeeds = [...receivedFeedbacks, resp];
         setReceivedFeedbacks(updatedReceivedFeeds);
         setFeedback("");
-      });
+      })
+      .catch((err) => renderError());
   };
   const renderFeedbacks = (feedbacks, received) =>
     feedbacks.map((feed) => (

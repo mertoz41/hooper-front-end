@@ -44,4 +44,12 @@ const getTiming = (created_at) => {
 
 const API_ROOT = "http://localhost:3000";
 
-export { getTiming, API_ROOT };
+const errorToast = {
+  title: "An error occurred.",
+  description: "Please try again later.",
+  status: "error",
+  duration: 9000,
+  isClosable: true,
+}
+
+export { getTiming, API_ROOT, errorToast };

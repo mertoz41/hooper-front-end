@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/NavBar";
 import CourtForum from "../components/CourtForum";
-import { Box } from "@chakra-ui/react";
+import { Box, useToast } from "@chakra-ui/react";
 import Map from "../components/Map";
 import NewCourt from "../components/NewCourt";
 import ProfileSection from "../components/ProfileSection";
-import { API_ROOT } from "../utilities";
+import { API_ROOT, errorToast } from "../utilities";
 const ReusableBox = ({ children }) => {
   return (
     <Box
@@ -33,6 +33,7 @@ const Explore = () => {
   const [selectedNewCourt, setSelectedNewCourt] = useState(null);
   const [searchedUser, setSearchedUser] = useState(null);
   const [newCourt, setDisplayNewCourt] = useState(false);
+  const toast = useToast();
   useEffect(() => {
     let token = localStorage.getItem("jwt");
     fetch(`${API_ROOT}/locations`, {
@@ -44,12 +45,19 @@ const Explore = () => {
       .then((resp) => resp.json())
       .then((resp) => {
         setLocations(resp.locations);
+      })
+      .catch((err) => {
+        alert(err);
       });
   }, []);
 
   const closeNewCourt = () => {
     setSelectedNewCourt(null);
     setDisplayNewCourt(false);
+  };
+
+  const renderError = () => {
+    toast(errorToast);
   };
 
   const selectUser = (id) => {
@@ -70,6 +78,7 @@ const Explore = () => {
     <Box h="100vh">
       <Navbar
         setSearchedUser={setSearchedUser}
+        renderError={renderError}
         setDisplayNewCourt={setDisplayNewCourt}
       />
 
@@ -77,6 +86,7 @@ const Explore = () => {
         <ProfileSection
           searchedUser={searchedUser}
           setSearchedUser={setSearchedUser}
+          renderError={renderError}
           selectUser={selectUser}
         />
       ) : null}
@@ -87,6 +97,7 @@ const Explore = () => {
             setSelectedNewCourt={setSelectedNewCourt}
             setDisplayNewCourt={closeNewCourt}
             setLocations={setLocations}
+            renderError={renderError}
           />
         </ReusableBox>
       ) : null}
@@ -96,6 +107,7 @@ const Explore = () => {
             setSelectedMarker={setSelectedMarker}
             location={selectedMarker}
             selectUser={selectUser}
+            renderError={renderError}
           />
         </ReusableBox>
       ) : null}
