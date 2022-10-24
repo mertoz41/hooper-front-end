@@ -11,7 +11,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const history = useHistory();
-  const login = (event) => {
+  const logUserIn = (event) => {
     event.preventDefault();
     setLoading(true);
     fetch(`${API_ROOT}/login`, {
@@ -49,7 +49,7 @@ const Login = () => {
           <Text>Hooper App</Text>
           <Text fontSize={22}>Login</Text>
         </Heading>
-        <form onSubmit={(e) => login(e)}>
+        <form onSubmit={(e) => logUserIn(e)}>
           <Input
             placeholder="username"
             onChange={(e) => setUsername(e.target.value)}
