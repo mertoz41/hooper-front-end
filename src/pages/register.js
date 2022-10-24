@@ -25,15 +25,21 @@ const Signup = () => {
   const [position, setPosition] = useState("");
   const [playLike, setPlayLike] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
   const toast = useToast();
 
   const registerUser = async () => {
+    if (errors.length) {
+      setErrors([]);
+    }
     if (password === passwordConfirm) {
       setLoading(true);
       let formData = new FormData();
       formData.append("username", username);
       formData.append("password", password);
-      formData.append("avatar", avatarBlob);
+      if (avatarBlob) {
+        formData.append("avatar", avatarBlob);
+      }
       formData.append("position", position);
       formData.append("height", height);
       formData.append("plays_like", playLike);
@@ -45,10 +51,17 @@ const Signup = () => {
           },
         })
         .then((resp) => {
-          alert("succezs");
-          logUserIn(username, password);
+          if (resp.data.errors && resp.data.errors.length) {
+            setErrors(resp.data.errors);
+            setLoading(false);
+          } else {
+            logUserIn(username, password);
+          }
         })
-        .catch((err) => toast(errorToast));
+        .catch((err) => {
+          setLoading(false);
+          toast(errorToast);
+        });
     } else {
       alert("passwords dont match");
     }
@@ -120,6 +133,15 @@ const Signup = () => {
           <Text>Hooper App</Text>
           <Text fontSize={22}>Register</Text>
         </Heading>
+        <Box>
+          {errors.length
+            ? errors.map((err, i) => (
+                <Text fontSize={12} color="red" key={i}>
+                  - username {err}.
+                </Text>
+              ))
+            : null}
+        </Box>
         <Box padding={5}>
           {renderInput("username", username, setUsername)}
           <Flex>

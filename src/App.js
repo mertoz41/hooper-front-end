@@ -10,7 +10,6 @@ import store from "./redux/store";
 import { API_ROOT, errorToast } from "./utilities";
 
 const App = ({ currentUser, history }) => {
-  const [displayError, setDisplayError] = useState(false);
   const toast = useToast();
   useEffect(() => {
     checkJwt();
