@@ -5,14 +5,18 @@ import store from "../redux/store";
 import { Box, Image, Input, Text, Button, CloseButton } from "@chakra-ui/react";
 import AvatarPlaceholder from "../assets/placeholder.png";
 import { API_ROOT } from "../utilities";
+import Ball from "../assets/ball.gif";
 const NavBar = ({
   setSearchedUser,
   setDisplayNewCourt,
   currentUser,
   renderError,
+  setUserLocation,
+  userLocation,
 }) => {
   const [searching, setSearching] = useState("");
   const [hoopers, setHoopers] = useState([]);
+  const [userLocationLoading, setUserLocationLoading] = useState(false);
 
   const searchUsers = (event) => {
     let hooper = event.target.value;
@@ -31,6 +35,22 @@ const NavBar = ({
         .catch((err) => {
           renderError();
         });
+    }
+  };
+
+  const getUserLocation = () => {
+    if (userLocation) {
+      let location = { ...userLocation };
+      setUserLocation(location);
+    } else {
+      setUserLocationLoading(true);
+      navigator.geolocation.getCurrentPosition(function (position) {
+        setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setUserLocationLoading(false);
+      });
     }
   };
 
@@ -69,7 +89,7 @@ const NavBar = ({
       backdropBlur="10px"
       paddingX={5}
       height={100}
-      w="50%"
+      w="70%"
       display="flex"
       position={"absolute"}
       zIndex={1}
@@ -133,8 +153,24 @@ const NavBar = ({
           </Box>
         ) : null}
       </Box>
+      <Box flex={1} display="flex" justifyContent="flex-end">
+        {hoopers.length || userLocationLoading ? (
+          <Image alignSelf={"center"} src={Ball} w={16} />
+        ) : null}
+      </Box>
       <Box flex={2}>
         <Image src={hoop} m="0 auto" width={130} />
+      </Box>
+      <Box flex={1} display="flex">
+        <Button
+          size={"sm"}
+          alignSelf={"center"}
+          backgroundColor="transparent"
+          borderWidth={2}
+          onClick={() => getUserLocation()}
+        >
+          your position
+        </Button>
       </Box>
       <Box
         flex={1}

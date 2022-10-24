@@ -50,6 +50,12 @@ class Map extends React.Component {
         lng: parseFloat(this.props.selectedNewCourt.lng),
       });
     }
+    if (this.props.userLocation && this.props.userLocation !== prevProps) {
+      this.map.panTo({
+        lat: parseFloat(this.props.userLocation.lat),
+        lng: parseFloat(this.props.userLocation.lng),
+      });
+    }
   }
 
   chooseMarker = (marker) => {

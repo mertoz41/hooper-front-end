@@ -31,6 +31,7 @@ const Explore = () => {
   const [locations, setLocations] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [selectedNewCourt, setSelectedNewCourt] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
   const [searchedUser, setSearchedUser] = useState(null);
   const [newCourt, setDisplayNewCourt] = useState(false);
   const toast = useToast();
@@ -80,6 +81,8 @@ const Explore = () => {
         setSearchedUser={setSearchedUser}
         renderError={renderError}
         setDisplayNewCourt={setDisplayNewCourt}
+        setUserLocation={setUserLocation}
+        userLocation={userLocation}
       />
 
       {searchedUser ? (
@@ -113,6 +116,7 @@ const Explore = () => {
       ) : null}
       <Map
         selectedNewCourt={selectedNewCourt}
+        userLocation={userLocation}
         selectMarker={setSelectedMarker}
         locations={locations}
       />

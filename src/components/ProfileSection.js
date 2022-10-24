@@ -50,6 +50,7 @@ const ProfileSection = ({
         let updatedReceivedFeeds = [...receivedFeedbacks, resp];
         setReceivedFeedbacks(updatedReceivedFeeds);
         setFeedback("");
+        // UPDATE CURRENT USER
       })
       .catch((err) => renderError());
   };
