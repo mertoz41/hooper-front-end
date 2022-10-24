@@ -9,11 +9,11 @@ import {
   Button,
   Flex,
   useToast,
-  Spinner,
 } from "@chakra-ui/react";
 import Compressor from "compressorjs";
 import axios from "axios";
 import store from "../redux/store";
+import Ball from "../assets/ball.gif";
 import { API_ROOT, errorToast } from "../utilities";
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -163,7 +163,7 @@ const Signup = () => {
           {renderInput("confirm password", passwordConfirm, setPasswordConfirm)}
           {loading ? (
             <Flex justifyContent={"center"}>
-              <Spinner size="lg" />
+              <Image src={Ball} w={16} />
             </Flex>
           ) : (
             <Button

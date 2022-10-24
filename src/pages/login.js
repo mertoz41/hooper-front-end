@@ -1,18 +1,11 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router";
-import Hoop from "../assets/ball.gif";
+import Ball from "../assets/ball.gif";
 import store from "../redux/store";
 import { API_ROOT } from "../utilities";
-import {
-  Box,
-  Button,
-  Spinner,
-  Heading,
-  Input,
-  Text,
-  Image,
-} from "@chakra-ui/react";
+import Hoop from "../assets/hoopster.png";
+import { Box, Button, Heading, Input, Text, Image } from "@chakra-ui/react";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
@@ -72,7 +65,7 @@ const Login = () => {
           />
           {loading ? (
             <Box justifyContent={"center"} display="flex">
-              <Spinner size={"lg"} />
+              <Image src={Ball} w={20} m="0 auto" />
             </Box>
           ) : (
             <Box>
