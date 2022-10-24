@@ -43,6 +43,10 @@
       "last 1 safari version"
     ]
   },
+  "engines": {
+    "node": "v16.13.1",
+    "npm": "8.1.2"
+  },
   "devDependencies": {
     "webpack-cli": "^4.10.0"
   },

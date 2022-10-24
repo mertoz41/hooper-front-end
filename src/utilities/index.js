@@ -42,7 +42,7 @@ const getTiming = (created_at) => {
   }
 };
 
-const API_ROOT = "http://localhost:3000";
+const API_ROOT = "https://polar-plains-09713.herokuapp.com/";
 
 const errorToast = {
   title: "An error occurred.",
@@ -50,6 +50,6 @@ const errorToast = {
   status: "error",
   duration: 9000,
   isClosable: true,
-}
+};
 
 export { getTiming, API_ROOT, errorToast };
