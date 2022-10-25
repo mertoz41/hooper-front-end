@@ -19,6 +19,9 @@ const App = ({ currentUser }) => {
       fetch(`${API_ROOT}/check`, {
         method: "GET",
         headers: {
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "*",
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },
       })

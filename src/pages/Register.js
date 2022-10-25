@@ -47,6 +47,9 @@ const Signup = () => {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*" 
           },
         })
         .then((resp) => {
@@ -71,6 +74,9 @@ const Signup = () => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*" 
       },
       body: JSON.stringify({ username: username, password: password }),
     })

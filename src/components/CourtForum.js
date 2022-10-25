@@ -28,6 +28,9 @@ const CourtForum = ({
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*" 
       },
     })
       .then((resp) => resp.json())
@@ -46,6 +49,9 @@ const CourtForum = ({
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*" 
       },
       body: JSON.stringify({ message: message, location_id: location.id }),
     })

@@ -39,6 +39,9 @@ const ProfileSection = ({
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*" 
       },
       body: JSON.stringify({
         supervisee_id: searchedUser.id,

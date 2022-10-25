@@ -41,6 +41,9 @@ const Explore = () => {
     fetch(`${API_ROOT}/locations`, {
       method: "GET",
       headers: {
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*" ,
         Authorization: `Bearer ${token}`,
       },
     })
@@ -67,6 +70,9 @@ const Explore = () => {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*" 
       },
     })
       .then((resp) => resp.json())
