@@ -6,6 +6,7 @@ import Map from "../components/Map";
 import NewCourt from "../components/NewCourt";
 import ProfileSection from "../components/ProfileSection";
 import { API_ROOT, errorToast } from "../utilities";
+
 const ReusableBox = ({ children }) => {
   return (
     <Box
