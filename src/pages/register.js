@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { withRouter } from "react-router";
 import {
   Box,
   Text,
@@ -181,4 +180,4 @@ const Signup = () => {
   );
 };
 
-export default withRouter(Signup);
+export default Signup;

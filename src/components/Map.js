@@ -12,6 +12,7 @@ const center = {
 };
 
 function Map({ locations, selectMarker, userLocation, selectedNewCourt }) {
+  const [map, setMap] = React.useState(null);
   useEffect(() => {
     if (map && userLocation) {
       map.panTo(userLocation);
@@ -25,11 +26,8 @@ function Map({ locations, selectMarker, userLocation, selectedNewCourt }) {
     googleMapsApiKey: `${process.env.REACT_APP_MAP_API_KEY}`,
   });
 
-  const [map, setMap] = React.useState(null);
-
   const onLoad = React.useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
+    map.setZoom(13);
     setMap(map);
   }, []);
 
@@ -41,7 +39,6 @@ function Map({ locations, selectMarker, userLocation, selectedNewCourt }) {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={13}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >

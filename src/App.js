@@ -1,16 +1,16 @@
 import React, { Fragment, useEffect } from "react";
 import Explore from "./pages/Explore";
 import Login from "./pages/Login";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import Register from "./pages/Register";
 import { useToast } from "@chakra-ui/react";
-import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import store from "./redux/store";
 import { API_ROOT, errorToast } from "./utilities";
 
-const App = ({ currentUser, history }) => {
+const App = ({ currentUser }) => {
   const toast = useToast();
+  let history = useHistory();
   useEffect(() => {
     checkJwt();
   }, []);
@@ -70,4 +70,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(withRouter(App));
+export default connect(mapStateToProps)(App);

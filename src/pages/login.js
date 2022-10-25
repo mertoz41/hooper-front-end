@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { withRouter } from "react-router";
 import Ball from "../assets/ball.gif";
 import store from "../redux/store";
 import { API_ROOT } from "../utilities";
@@ -97,4 +96,4 @@ const Login = () => {
   );
 };
 
-export default withRouter(Login);
+export default Login;
