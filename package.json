@@ -47,7 +47,7 @@
     "node": "v16.13.1",
     "npm": "8.1.2"
   },
-  "proxy": "https://hooper-app.herokuapp.com",
+  "proxy": "https://polar-plains-09713.herokuapp.com",
   "devDependencies": {
     "webpack-cli": "^4.10.0"
   },
