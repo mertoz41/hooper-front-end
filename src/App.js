@@ -16,7 +16,7 @@ const App = ({ currentUser }) => {
   }, []);
   const checkJwt = () => {
     if (localStorage.getItem("jwt")) {
-      fetch(`${API_ROOT}/check`, {
+      fetch(`/check`, {
         method: "GET",
         headers: {
           "Access-Control-Allow-Headers": "*",

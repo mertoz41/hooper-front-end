@@ -2,6 +2,7 @@
   "name": "hooper_app_frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://polar-plains-09713.herokuapp.com",
   "dependencies": {
     "@chakra-ui/react": "^2.3.6",
     "@emotion/react": "^11.10.4",
@@ -47,7 +48,6 @@
     "node": "v16.13.1",
     "npm": "8.1.2"
   },
-  "proxy": "https://polar-plains-09713.herokuapp.com",
   "devDependencies": {
     "webpack-cli": "^4.10.0"
   },

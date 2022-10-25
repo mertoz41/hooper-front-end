@@ -13,7 +13,7 @@ const Login = () => {
   const login = (event) => {
     event.preventDefault();
     setLoading(true);
-    fetch(`${API_ROOT}/login`, {
+    fetch(`/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
