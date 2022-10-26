@@ -114,12 +114,12 @@ const Explore = () => {
           />
         </ReusableBox>
       ) : null}
-      <Map
+      {/* <Map
         selectedNewCourt={selectedNewCourt}
         userLocation={userLocation}
         selectMarker={setSelectedMarker}
         locations={locations}
-      />
+      /> */}
     </Box>
   );
 };
