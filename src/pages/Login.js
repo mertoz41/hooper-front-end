@@ -35,10 +35,11 @@ const Login = () => {
   };
 
   return (
-    <Box h="100vh" display="flex" flexDir={"column"} justifyContent={"center"}>
+    <Box h="100vh" display="flex" flexDir={"column"} justifyContent={{lg: "center"}}>
       <Box
-        w="30%"
+        w={{ sm: "100%", lg: "30%" }}
         alignSelf="center"
+        height={{sm: "100%", lg: 'auto'}}
         padding={10}
         borderWidth={2}
         justifyContent="center"

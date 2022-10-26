@@ -121,15 +121,16 @@ const Signup = () => {
   return (
     <Box h="100vh" display="flex" flexDir={"column"} justifyContent={"center"}>
       <Box
-        w="30%"
+        w={{ sm: "100%", lg: "30%" }}
         alignSelf="center"
         padding={5}
         borderWidth={2}
         justifyContent="center"
+        height={{sm: "100%"}}
         borderRadius={10}
       >
-        <Heading marginBottom={5} alignSelf="center" textAlign={"center"}>
-          <Text>Hooper App</Text>
+        <Heading marginBottom={{sm: 0,lg: 5}} alignSelf="center" textAlign={"center"}>
+          <Text display={{sm: 'none', lg: "block"}}>Hooper App</Text>
           <Text fontSize={22}>Register</Text>
         </Heading>
         <Box>

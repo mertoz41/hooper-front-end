@@ -93,23 +93,25 @@ const ProfileSection = ({
       zIndex={1}
       left={0}
       right={0}
-      bottom={0}
+      bottom={{ lg: 0 }}
       padding={5}
-      top={0}
+      top={{ sm: 1, lg: 0 }}
       margin="auto"
       display={"flex"}
-      height={330}
-      width={600}
+      flexDirection={{ sm: "column", lg: "row" }}
+      height={{ sm: 420, lg: 330 }}
+      width={{ sm: "98%", lg: 600 }}
       borderRadius={20}
       borderWidth={2}
       backgroundColor="rgba(255,255,255,.2)"
       backdropFilter="auto"
       backdropBlur="10px"
     >
-      <Box flexDirection="column" display={"flex"}>
+      <Box flexDirection={{ sm: "row", lg: "column" }} display={"flex"}>
         <Image
           borderRadius="full"
-          h={180}
+          margin={"0 auto"}
+          boxSize={{ sm: 14 }}
           src={
             searchedUser.avatar
               ? `${API_ROOT}${searchedUser.avatar}`
@@ -117,22 +119,29 @@ const ProfileSection = ({
           }
         />
 
-        <Box marginTop={5} textAlign="center">
+        <Box marginTop={{ sm: 0, lg: 5 }} textAlign="center">
           <Heading>
-            <Text fontSize={23}>{searchedUser.username}</Text>
+            <Text fontSize={{ sm: 16, lg: 23 }}>{searchedUser.username}</Text>
           </Heading>
-          <Text>
+          <Text fontSize={{ sm: 14 }}>
             height: {searchedUser.height ? searchedUser.height : "N/A"}{" "}
             position: {searchedUser.position ? searchedUser.position : "N/A"}
           </Text>
           <Text></Text>
-          <Text>
+          <Text fontSize={{ sm: 14 }}>
             plays like{" "}
             {searchedUser.plays_like ? searchedUser.plays_like : "N/A"}
           </Text>
         </Box>
       </Box>
-      <Divider orientation="vertical" marginX={2} />
+      <CloseButton
+        onClick={() => setSearchedUser(null)}
+        position={"absolute"}
+        right={{ sm: 1, lg: 5 }}
+        top={{ sm: 1 }}
+        display={{ sm: "block", lg: "none" }}
+      />
+      <Divider orientation={{ lg: "vertical" }} marginX={2} />
       <Flex flexDirection={"column"} flex={1}>
         <Flex flex={1} justifyContent="space-between">
           <Tabs flex={1}>
@@ -143,7 +152,7 @@ const ProfileSection = ({
               </Tab>
               <Tab>given ({givenFeedbacks ? givenFeedbacks.length : 0})</Tab>
             </TabList>
-            <TabPanels>
+            <TabPanels height={230} overflow="auto">
               <TabPanel>
                 <Box>
                   {receivedFeedbacks && receivedFeedbacks.length ? (
@@ -173,6 +182,7 @@ const ProfileSection = ({
           onClick={() => setSearchedUser(null)}
           position={"absolute"}
           right={5}
+          display={{ sm: "none", lg: "block" }}
         />
         {currentUser.id !== searchedUser.id ? (
           <form onSubmit={(e) => postFeedback(e)}>
