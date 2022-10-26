@@ -18,6 +18,7 @@ const Login = () => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({ username: username, password: password }),
     })
