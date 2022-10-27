@@ -90,7 +90,11 @@ const CourtForum = ({
             <Box key={post.id} borderBottomWidth={1} marginBottom={3}>
               <Flex>
                 <Image
-                  src={post.avatar ? post.avatar : AvatarPlaceholder}
+                  src={
+                    post.avatar
+                      ? `${API_ROOT}${post.avatar}`
+                      : AvatarPlaceholder
+                  }
                   boxSize={55}
                   borderRadius="full"
                 />
@@ -124,7 +128,6 @@ const CourtForum = ({
             textAlign="left"
             placeholder="leave your message here..."
             onChange={(event) => setMessage(event.target.value)}
-            
           />
           <Button
             marginLeft={2}
