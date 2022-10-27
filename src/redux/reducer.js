@@ -4,7 +4,7 @@ const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case "LOG_USER_IN":
+    case "UPDATE_CURRENT_USER":
       return { ...state, currentUser: action.currentUser };
     case "LOG_USER_OUT":
       return { ...initialState };

@@ -29,7 +29,6 @@ const NavBar = ({
   const [searching, setSearching] = useState("");
   const [hoopers, setHoopers] = useState([]);
   const [userLocationLoading, setUserLocationLoading] = useState(false);
-
   const searchUsers = (event) => {
     let hooper = event.target.value;
     setSearching(hooper);

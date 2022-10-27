@@ -6,7 +6,7 @@ import {
   Button,
   Heading,
   CloseButton,
-  Input,
+  Textarea,
   Flex,
 } from "@chakra-ui/react";
 import AvatarPlaceholder from "../assets/placeholder.png";
@@ -119,15 +119,17 @@ const CourtForum = ({
       </Box>
       <form onSubmit={(e) => postPosting(e)}>
         <Flex>
-          <Input
+          <Textarea
             value={message}
             textAlign="left"
             placeholder="leave your message here..."
             onChange={(event) => setMessage(event.target.value)}
+            
           />
           <Button
             marginLeft={2}
             type="submit"
+            alignSelf={"center"}
             backgroundColor={"transparent"}
             borderWidth={1}
           >

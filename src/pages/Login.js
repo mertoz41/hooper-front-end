@@ -26,7 +26,7 @@ const Login = () => {
       .then((resp) => {
         if (resp.user_data) {
           localStorage.setItem("jwt", resp.token);
-          store.dispatch({ type: "LOG_USER_IN", currentUser: resp.user_data });
+          store.dispatch({ type: "UPDATE_CURRENT_USER", currentUser: resp.user_data });
           setLoading(false);
         } else {
           alert(resp.message);

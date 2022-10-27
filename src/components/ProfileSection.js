@@ -11,12 +11,13 @@ import {
   Text,
   Heading,
   Flex,
-  Input,
+  Textarea,
   Divider,
   Button,
 } from "@chakra-ui/react";
 import { connect } from "react-redux";
 import AvatarPlaceholder from "../assets/placeholder.png";
+import store from "../redux/store";
 import { getTiming, API_ROOT } from "../utilities";
 const ProfileSection = ({
   searchedUser,
@@ -50,7 +51,11 @@ const ProfileSection = ({
         let updatedReceivedFeeds = [...receivedFeedbacks, resp];
         setReceivedFeedbacks(updatedReceivedFeeds);
         setFeedback("");
-        // UPDATE CURRENT USER
+        let updatedGivenFeedbacks = [...currentUser.taught, resp];
+        store.dispatch({
+          type: "UPDATE_CURRENT_USER",
+          currentUser: { ...currentUser, taught: updatedGivenFeedbacks },
+        });
       })
       .catch((err) => renderError());
   };
@@ -99,7 +104,7 @@ const ProfileSection = ({
       margin="auto"
       display={"flex"}
       flexDirection={{ sm: "column", lg: "row" }}
-      height={{ sm: 420, lg: 330 }}
+      height={{ sm: 420, lg: 400 }}
       width={{ sm: "98%", lg: 600 }}
       borderRadius={20}
       borderWidth={2}
@@ -111,7 +116,7 @@ const ProfileSection = ({
         <Image
           borderRadius="full"
           margin={"0 auto"}
-          boxSize={{ sm: 14 }}
+          boxSize={{ sm: 14, lg: 40 }}
           src={
             searchedUser.avatar
               ? `${API_ROOT}${searchedUser.avatar}`
@@ -187,13 +192,21 @@ const ProfileSection = ({
         {currentUser.id !== searchedUser.id ? (
           <form onSubmit={(e) => postFeedback(e)}>
             <Flex>
-              <Input
+              <Textarea
                 placeholder={`give this hooper feedbacks...`}
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
-                borderWidth={2}
+                borderWidth={1}
               />
-              <Button type="submit">send</Button>
+              <Button
+                marginLeft={2}
+                type="submit"
+                alignSelf={"center"}
+                backgroundColor={"transparent"}
+                borderWidth={1}
+              >
+                send
+              </Button>
             </Flex>
           </form>
         ) : null}

@@ -24,7 +24,7 @@ const App = ({ currentUser }) => {
       })
         .then((resp) => resp.json())
         .then((resp) => {
-          store.dispatch({ type: "LOG_USER_IN", currentUser: resp });
+          store.dispatch({ type: "UPDATE_CURRENT_USER", currentUser: resp });
         })
         .catch((err) => {
           toast(errorToast);
