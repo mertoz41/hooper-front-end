@@ -29,6 +29,7 @@ const Login = () => {
           store.dispatch({ type: "UPDATE_CURRENT_USER", currentUser: resp.user_data });
           setLoading(false);
         } else {
+          setLoading(false);
           alert(resp.message);
         }
       });

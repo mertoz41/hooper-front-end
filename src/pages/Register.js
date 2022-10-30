@@ -63,6 +63,7 @@ const Signup = () => {
         });
     } else {
       alert("passwords dont match");
+      setLoading(false);
     }
   };
   const logUserIn = (username, password) => {
@@ -78,11 +79,17 @@ const Signup = () => {
       .then((resp) => {
         if (resp.user_data) {
           localStorage.setItem("jwt", resp.token);
-          store.dispatch({ type: "UPDATE_CURRENT_USER", currentUser: resp.user_data });
+          store.dispatch({
+            type: "UPDATE_CURRENT_USER",
+            currentUser: resp.user_data,
+          });
           setLoading(false);
         }
       })
-      .catch((err) => toast(errorToast));
+      .catch((err) => {
+        toast(errorToast);
+        setLoading(false);
+      });
   };
   const renderInput = (label, value, setFunc) => {
     return (
@@ -126,11 +133,15 @@ const Signup = () => {
         padding={5}
         borderWidth={2}
         justifyContent="center"
-        height={{sm: "100%"}}
+        height={{ sm: "100%" }}
         borderRadius={10}
       >
-        <Heading marginBottom={{sm: 0,lg: 5}} alignSelf="center" textAlign={"center"}>
-          <Text display={{sm: 'none', lg: "block"}}>Hooper App</Text>
+        <Heading
+          marginBottom={{ sm: 0, lg: 5 }}
+          alignSelf="center"
+          textAlign={"center"}
+        >
+          <Text display={{ sm: "none", lg: "block" }}>Hooper App</Text>
           <Text fontSize={22}>Register</Text>
         </Heading>
         <Box>
