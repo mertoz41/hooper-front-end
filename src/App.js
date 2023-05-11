@@ -7,6 +7,7 @@ import { useToast } from "@chakra-ui/react";
 import { connect } from "react-redux";
 import store from "./redux/store";
 import { API_ROOT, errorToast } from "./utilities";
+import { Helmet } from "react-helmet";
 
 const App = ({ currentUser }) => {
   const toast = useToast();
@@ -36,6 +37,15 @@ const App = ({ currentUser }) => {
 
   return (
     <Fragment>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Hooper App</title>
+        <meta
+          name="description"
+          content="App designed for hoopers to find new courts and organize games."
+        />
+        <meta name="keywords" content="Sports, Basketball" />
+      </Helmet>
       <Switch>
         <Route
           exact
